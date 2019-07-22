@@ -52,27 +52,14 @@ class SearchController: UITableViewController {
 
 extension SearchController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        let url = "https://itunes.apple.com/search"
-        let parameters = ["term": searchText, "media": "podcast"]
-        Alamofire.request(url, method: .get, parameters: parameters, encoding: URLEncoding.default, headers: nil).responseData { (dataResponse) in
-            if let error = dataResponse.error {
-                print("Failed to connect to yahoo:", error)
+        
+        APIService.shared.fetchPodcasts(searchText: searchText) { (podcasts, error) in
+            if error != nil {
                 return
             }
-            guard let data = dataResponse.data else { return }
-            do {
-                let searchResults = try JSONDecoder().decode(SearchResults.self, from: data)
-                self.podcasts = searchResults.results
-                self.tableView.reloadData()
-            } catch let jsonError {
-                print("Failed to decode:", jsonError)
-            }
+            guard let podcasts = podcasts  else { return }
+            self.podcasts = podcasts
+            self.tableView.reloadData()
         }
     }
-    
-    struct SearchResults: Decodable {
-        let resultCount: Int
-        let results: [Podcast]
-    }
-    
 }

@@ -17,6 +17,7 @@
 		ED38B84322E3A5730088D216 /* MainTabController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B84222E3A5730088D216 /* MainTabController.swift */; };
 		ED38B86922E61DC90088D216 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B86822E61DC90088D216 /* SearchController.swift */; };
 		ED38B86B22E61E550088D216 /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B86A22E61E550088D216 /* Podcast.swift */; };
+		ED38B87122E646AE0088D216 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B87022E646AE0088D216 /* APIService.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,6 +35,7 @@
 		ED38B84222E3A5730088D216 /* MainTabController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainTabController.swift; sourceTree = "<group>"; };
 		ED38B86822E61DC90088D216 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		ED38B86A22E61E550088D216 /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
+		ED38B87022E646AE0088D216 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,6 +88,7 @@
 		ED38B82C22E3A3DF0088D216 /* Podcasts */ = {
 			isa = PBXGroup;
 			children = (
+				ED38B86E22E646850088D216 /* API */,
 				ED38B84622E3A94F0088D216 /* Models */,
 				ED38B84522E3A9490088D216 /* Views */,
 				ED38B84422E3A93E0088D216 /* Controllers */,
@@ -122,6 +125,14 @@
 				ED38B86A22E61E550088D216 /* Podcast.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		ED38B86E22E646850088D216 /* API */ = {
+			isa = PBXGroup;
+			children = (
+				ED38B87022E646AE0088D216 /* APIService.swift */,
+			);
+			path = API;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -240,6 +251,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				ED38B83622E3A3DF0088D216 /* Podcasts.xcdatamodeld in Sources */,
+				ED38B87122E646AE0088D216 /* APIService.swift in Sources */,
 				ED38B86922E61DC90088D216 /* SearchController.swift in Sources */,
 				ED38B86B22E61E550088D216 /* Podcast.swift in Sources */,
 				ED38B83022E3A3DF0088D216 /* FavoritesController.swift in Sources */,
