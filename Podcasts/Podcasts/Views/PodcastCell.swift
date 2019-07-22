@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import SDWebImage
 
 class PodcastCell: UITableViewCell {
     
@@ -17,8 +18,23 @@ class PodcastCell: UITableViewCell {
     
     var podcast: Podcast! {
         didSet {
-            trackNameLabel.text = podcast.trackName ?? ""
-            artistNameLabel.text = podcast.artistName ?? ""
+            trackNameLabel.text = podcast.trackName
+            artistNameLabel.text = podcast.artistName
+            episodCountLabel.text = "\(podcast.trackCount ?? 0) Episodes"
+            guard let url = URL(string: podcast.artworkUrl600 ?? "") else { return }
+            podcastImageView.sd_setImage(with: url)
+            
+            // Raw loading data image
+//            URLSession.shared.dataTask(with: url) { (data, _, error) in
+//                if let error = error {
+//                    print("Failed to load image:", error)
+//                    return
+//                }
+//                guard let data = data else { return }
+//                DispatchQueue.main.async {
+//                    self.podcastImageView.image = UIImage(data: data)
+//                }
+//            }.resume()
         }
     }
     

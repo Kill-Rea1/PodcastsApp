@@ -13,10 +13,7 @@ class SearchController: UITableViewController {
     
     fileprivate let cellId = "podcastCell"
     
-    fileprivate var podcasts = [
-        Podcast(trackName: "Lets build that app", artistName: "Brian Voong"),
-        Podcast(trackName: "ABC", artistName: "Test")
-        ]
+    fileprivate var podcasts = [Podcast]()
     fileprivate let searchController = UISearchController(searchResultsController: nil)
     
     override func viewDidLoad() {
@@ -28,6 +25,7 @@ class SearchController: UITableViewController {
     fileprivate func setupTableView() {
         let nib = UINib(nibName: "PodcastCell", bundle: nil)
         tableView.register(nib, forCellReuseIdentifier: cellId)
+        tableView.tableFooterView = UIView()
     }
     
     fileprivate func setupSearchBar() {
@@ -35,6 +33,18 @@ class SearchController: UITableViewController {
         navigationItem.hidesSearchBarWhenScrolling = false
         searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
+    }
+    
+    override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
+        let label = UILabel()
+        label.text = "Please enter search term"
+        label.textAlignment = .center
+        label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
+        return label
+    }
+    
+    override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
+        return 250
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
