@@ -12,7 +12,6 @@ import Alamofire
 class SearchController: UITableViewController {
     
     fileprivate let cellId = "podcastCell"
-    
     fileprivate var podcasts = [Podcast]()
     fileprivate let searchController = UISearchController(searchResultsController: nil)
     
@@ -29,6 +28,7 @@ class SearchController: UITableViewController {
     }
     
     fileprivate func setupSearchBar() {
+        definesPresentationContext = true
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
         searchController.dimsBackgroundDuringPresentation = false
@@ -44,7 +44,7 @@ class SearchController: UITableViewController {
     }
     
     override func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        return 250
+        return podcasts.count > 0 ? 0 : 250
     }
     
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
@@ -60,6 +60,13 @@ class SearchController: UITableViewController {
         let podcast = podcasts[indexPath.row]
         cell.podcast = podcast
         return cell
+    }
+    
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let episodesController = EpisodesController()
+        let podcast = podcasts[indexPath.row]
+        episodesController.podcast = podcast
+        navigationController?.pushViewController(episodesController, animated: true)
     }
 }
 

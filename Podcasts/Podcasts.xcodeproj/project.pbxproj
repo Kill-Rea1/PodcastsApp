@@ -20,6 +20,10 @@
 		ED38B87122E646AE0088D216 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B87022E646AE0088D216 /* APIService.swift */; };
 		ED38B87322E64BDD0088D216 /* PodcastCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED38B87222E64BDD0088D216 /* PodcastCell.xib */; };
 		ED38B87522E64EED0088D216 /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B87422E64EED0088D216 /* PodcastCell.swift */; };
+		ED38B87722E66B940088D216 /* EpisodesController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B87622E66B940088D216 /* EpisodesController.swift */; };
+		ED38B87922E66E020088D216 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B87822E66E020088D216 /* Episode.swift */; };
+		ED38B88222E67D930088D216 /* EpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B88022E67D930088D216 /* EpisodeCell.swift */; };
+		ED38B88322E67D930088D216 /* EpisodeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED38B88122E67D930088D216 /* EpisodeCell.xib */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,8 +42,12 @@
 		ED38B86822E61DC90088D216 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		ED38B86A22E61E550088D216 /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
 		ED38B87022E646AE0088D216 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
-		ED38B87222E64BDD0088D216 /* PodcastCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastCell.xib; sourceTree = "<group>"; };
-		ED38B87422E64EED0088D216 /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
+		ED38B87222E64BDD0088D216 /* PodcastCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = PodcastCell.xib; path = ../PodcastCell.xib; sourceTree = "<group>"; };
+		ED38B87422E64EED0088D216 /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; name = PodcastCell.swift; path = ../PodcastCell.swift; sourceTree = "<group>"; };
+		ED38B87622E66B940088D216 /* EpisodesController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodesController.swift; sourceTree = "<group>"; };
+		ED38B87822E66E020088D216 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
+		ED38B88022E67D930088D216 /* EpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCell.swift; sourceTree = "<group>"; };
+		ED38B88122E67D930088D216 /* EpisodeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EpisodeCell.xib; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -110,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				ED38B86822E61DC90088D216 /* SearchController.swift */,
+				ED38B87622E66B940088D216 /* EpisodesController.swift */,
 				ED38B82F22E3A3DF0088D216 /* FavoritesController.swift */,
 				ED38B84222E3A5730088D216 /* MainTabController.swift */,
 			);
@@ -119,8 +128,8 @@
 		ED38B84522E3A9490088D216 /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				ED38B87222E64BDD0088D216 /* PodcastCell.xib */,
-				ED38B87422E64EED0088D216 /* PodcastCell.swift */,
+				ED38B87B22E67CBF0088D216 /* Episode */,
+				ED38B87A22E67CA30088D216 /* Podcast */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -129,6 +138,7 @@
 			isa = PBXGroup;
 			children = (
 				ED38B86A22E61E550088D216 /* Podcast.swift */,
+				ED38B87822E66E020088D216 /* Episode.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -139,6 +149,24 @@
 				ED38B87022E646AE0088D216 /* APIService.swift */,
 			);
 			path = API;
+			sourceTree = "<group>";
+		};
+		ED38B87A22E67CA30088D216 /* Podcast */ = {
+			isa = PBXGroup;
+			children = (
+				ED38B87222E64BDD0088D216 /* PodcastCell.xib */,
+				ED38B87422E64EED0088D216 /* PodcastCell.swift */,
+			);
+			path = Podcast;
+			sourceTree = "<group>";
+		};
+		ED38B87B22E67CBF0088D216 /* Episode */ = {
+			isa = PBXGroup;
+			children = (
+				ED38B88022E67D930088D216 /* EpisodeCell.swift */,
+				ED38B88122E67D930088D216 /* EpisodeCell.xib */,
+			);
+			path = Episode;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -203,6 +231,7 @@
 			files = (
 				ED38B83B22E3A3E10088D216 /* LaunchScreen.storyboard in Resources */,
 				ED38B83822E3A3E10088D216 /* Assets.xcassets in Resources */,
+				ED38B88322E67D930088D216 /* EpisodeCell.xib in Resources */,
 				ED38B87322E64BDD0088D216 /* PodcastCell.xib in Resources */,
 				ED38B83322E3A3DF0088D216 /* Main.storyboard in Resources */,
 			);
@@ -260,11 +289,14 @@
 				ED38B83622E3A3DF0088D216 /* Podcasts.xcdatamodeld in Sources */,
 				ED38B87122E646AE0088D216 /* APIService.swift in Sources */,
 				ED38B87522E64EED0088D216 /* PodcastCell.swift in Sources */,
+				ED38B88222E67D930088D216 /* EpisodeCell.swift in Sources */,
+				ED38B87922E66E020088D216 /* Episode.swift in Sources */,
 				ED38B86922E61DC90088D216 /* SearchController.swift in Sources */,
 				ED38B86B22E61E550088D216 /* Podcast.swift in Sources */,
 				ED38B83022E3A3DF0088D216 /* FavoritesController.swift in Sources */,
 				ED38B84322E3A5730088D216 /* MainTabController.swift in Sources */,
 				ED38B82E22E3A3DF0088D216 /* AppDelegate.swift in Sources */,
+				ED38B87722E66B940088D216 /* EpisodesController.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -324,6 +356,8 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_ACTIVITY_MODE = "";
+				"DEBUG_ACTIVITY_MODE[sdk=iphonesimulator*]" = disable;
 				DEBUG_INFORMATION_FORMAT = dwarf;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
@@ -385,6 +419,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				DEBUG_ACTIVITY_MODE = "";
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
