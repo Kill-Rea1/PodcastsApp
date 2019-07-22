@@ -18,6 +18,8 @@
 		ED38B86922E61DC90088D216 /* SearchController.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B86822E61DC90088D216 /* SearchController.swift */; };
 		ED38B86B22E61E550088D216 /* Podcast.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B86A22E61E550088D216 /* Podcast.swift */; };
 		ED38B87122E646AE0088D216 /* APIService.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B87022E646AE0088D216 /* APIService.swift */; };
+		ED38B87322E64BDD0088D216 /* PodcastCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED38B87222E64BDD0088D216 /* PodcastCell.xib */; };
+		ED38B87522E64EED0088D216 /* PodcastCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B87422E64EED0088D216 /* PodcastCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +38,8 @@
 		ED38B86822E61DC90088D216 /* SearchController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchController.swift; sourceTree = "<group>"; };
 		ED38B86A22E61E550088D216 /* Podcast.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Podcast.swift; sourceTree = "<group>"; };
 		ED38B87022E646AE0088D216 /* APIService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = APIService.swift; sourceTree = "<group>"; };
+		ED38B87222E64BDD0088D216 /* PodcastCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PodcastCell.xib; sourceTree = "<group>"; };
+		ED38B87422E64EED0088D216 /* PodcastCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PodcastCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -115,6 +119,8 @@
 		ED38B84522E3A9490088D216 /* Views */ = {
 			isa = PBXGroup;
 			children = (
+				ED38B87222E64BDD0088D216 /* PodcastCell.xib */,
+				ED38B87422E64EED0088D216 /* PodcastCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -197,6 +203,7 @@
 			files = (
 				ED38B83B22E3A3E10088D216 /* LaunchScreen.storyboard in Resources */,
 				ED38B83822E3A3E10088D216 /* Assets.xcassets in Resources */,
+				ED38B87322E64BDD0088D216 /* PodcastCell.xib in Resources */,
 				ED38B83322E3A3DF0088D216 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -252,6 +259,7 @@
 			files = (
 				ED38B83622E3A3DF0088D216 /* Podcasts.xcdatamodeld in Sources */,
 				ED38B87122E646AE0088D216 /* APIService.swift in Sources */,
+				ED38B87522E64EED0088D216 /* PodcastCell.swift in Sources */,
 				ED38B86922E61DC90088D216 /* SearchController.swift in Sources */,
 				ED38B86B22E61E550088D216 /* Podcast.swift in Sources */,
 				ED38B83022E3A3DF0088D216 /* FavoritesController.swift in Sources */,
