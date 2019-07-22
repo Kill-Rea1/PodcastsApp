@@ -13,7 +13,7 @@ class MainTabController: UITabBarController {
         super.viewDidLoad()
         tabBar.tintColor = .purple
         viewControllers = [
-            createViweController(viewController: UIViewController(), title: "Search", imageName: "search"),
+            createViweController(viewController: SearchController(), title: "Search", imageName: "search"),
             createViweController(viewController: FavoritesController(), title: "Favorites", imageName: "favorites"),
             createViweController(viewController: UIViewController(), title: "Downloads", imageName: "downloads")
         ]
