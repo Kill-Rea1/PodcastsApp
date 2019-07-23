@@ -41,26 +41,27 @@
                                         <constraint firstAttribute="width" secondItem="aIn-XC-Th5" secondAttribute="height" id="Q5M-d6-nFy"/>
                                     </constraints>
                                 </imageView>
-                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="1" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="79B-BH-exT">
+                                <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="79B-BH-exT">
                                     <rect key="frame" x="-2" y="420" width="370" height="47"/>
                                     <constraints>
                                         <constraint firstAttribute="height" constant="46" id="qUX-5q-KB5"/>
                                     </constraints>
                                     <connections>
                                         <action selector="currentTimeSlider:" destination="4Sc-wA-zIO" eventType="valueChanged" id="7hr-k8-UDg"/>
+                                        <action selector="handleCurrentTimeSliderChange:" destination="4Sc-wA-zIO" eventType="valueChanged" id="o4A-w4-JOK"/>
                                     </connections>
                                 </slider>
                                 <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QgM-ud-NMn">
                                     <rect key="frame" x="0.0" y="471" width="366" height="22"/>
                                     <subviews>
-                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="We3-Td-ocl">
-                                            <rect key="frame" x="0.0" y="0.0" width="39" height="22"/>
+                                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="We3-Td-ocl">
+                                            <rect key="frame" x="0.0" y="0.0" width="30" height="22"/>
                                             <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                             <color key="textColor" white="0.33333333333333331" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <nil key="highlightedColor"/>
                                         </label>
                                         <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vxy-j3-lLL">
-                                            <rect key="frame" x="39" y="0.0" width="297" height="22"/>
+                                            <rect key="frame" x="30" y="0.0" width="306" height="22"/>
                                             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         </view>
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="--:--" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="CHU-Hh-xvr">
@@ -106,6 +107,9 @@
                                             </constraints>
                                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <state key="normal" title="Button" image="rewind15"/>
+                                            <connections>
+                                                <action selector="handleRewind:" destination="4Sc-wA-zIO" eventType="touchUpInside" id="21E-gC-5re"/>
+                                            </connections>
                                         </button>
                                         <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1VS-7g-3lJ">
                                             <rect key="frame" x="105.5" y="0.0" width="50" height="209"/>
@@ -130,6 +134,9 @@
                                             </constraints>
                                             <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <state key="normal" title="Button" image="fastforward15"/>
+                                            <connections>
+                                                <action selector="handleFastForward:" destination="4Sc-wA-zIO" eventType="touchUpInside" id="di5-uT-rDS"/>
+                                            </connections>
                                         </button>
                                         <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sFf-MV-akT">
                                             <rect key="frame" x="316" y="0.0" width="50" height="209"/>
@@ -148,6 +155,9 @@
                                         </imageView>
                                         <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="X8y-jg-fiI">
                                             <rect key="frame" x="40" y="0.0" width="286" height="35"/>
+                                            <connections>
+                                                <action selector="handleVolumeChange:" destination="4Sc-wA-zIO" eventType="valueChanged" id="Tuy-2I-pe4"/>
+                                            </connections>
                                         </slider>
                                         <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="max_volume" translatesAutoresizingMaskIntoConstraints="NO" id="tmk-P5-1BG">
                                             <rect key="frame" x="332" y="0.0" width="34" height="34"/>
@@ -179,11 +189,6 @@
                 <constraint firstItem="OEz-us-08E" firstAttribute="leading" secondItem="4Sc-wA-zIO" secondAttribute="leading" id="uDP-X7-ha6"/>
             </constraints>
             <viewLayoutGuide key="safeArea" id="OJj-vo-ks5"/>
-            <userDefinedRuntimeAttributes>
-                <userDefinedRuntimeAttribute type="number" keyPath="layer.cornerRadius">
-                    <integer key="value" value="16"/>
-                </userDefinedRuntimeAttribute>
-            </userDefinedRuntimeAttributes>
             <connections>
                 <outlet property="authorLabel" destination="2xe-Tf-arR" id="Rbw-NR-byT"/>
                 <outlet property="contentView" destination="OEz-us-08E" id="qtn-89-Ap1"/>

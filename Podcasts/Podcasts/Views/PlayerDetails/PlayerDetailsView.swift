@@ -31,9 +31,6 @@ class PlayerDetailsView: UIView {
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var durationTimeLabel: UILabel!
     @IBOutlet weak var currentTimeSlider: UISlider!
-//    @IBAction func currentTimeSlider(_ sender: Any) {
-//    }
-    
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
@@ -77,7 +74,11 @@ class PlayerDetailsView: UIView {
     }
     
     fileprivate func getTimeString(time: CMTime) -> String {
-        let totalSeconds = Int(CMTimeGetSeconds(time))
+        var totalSeconds = 0
+        let timeFloat = CMTimeGetSeconds(time)
+        if !(timeFloat.isNaN || timeFloat.isInfinite) {
+            totalSeconds = Int(timeFloat)
+        }
         let seconds = totalSeconds % 60
         let minutes = totalSeconds / 60
         if totalSeconds / 3600 > 0 {
@@ -165,7 +166,37 @@ class PlayerDetailsView: UIView {
         addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
     }
     
+    
+    
     @IBAction func handleDismiss(_ sender: Any) {
         performAnimations(transform: startTransform, alpha: 0)
+    }
+    
+    @IBAction func handleCurrentTimeSliderChange(_ sender: Any) {
+        let percentage = currentTimeSlider.value
+        guard let duration = player.currentItem?.duration else { return }
+        let durationInSeconds = CMTimeGetSeconds(duration)
+        let seekTimeInSeconds = Float64(percentage) * durationInSeconds
+        let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, preferredTimescale: 1)
+        
+        player.seek(to: seekTime)
+    }
+    
+    @IBAction func handleFastForward(_ sender: Any) {
+        seekToCurrentTime(delta: 15)
+    }
+    
+    @IBAction func handleRewind(_ sender: Any) {
+        seekToCurrentTime(delta: -15)
+    }
+    
+    fileprivate func seekToCurrentTime(delta: Int64) {
+        let fifteenSeconds = CMTimeMake(value: delta, timescale: 1)
+        let seekTime = CMTimeAdd(player.currentTime(), fifteenSeconds)
+        player.seek(to: seekTime)
+    }
+    
+    @IBAction func handleVolumeChange(_ sender: UISlider) {
+        player.volume = sender.value
     }
 }
