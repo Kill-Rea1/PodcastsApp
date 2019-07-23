@@ -60,11 +60,12 @@ class EpisodesController: UITableViewController {
     override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 132
     }
+    let playerDetailsView = Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let episode = episodes[indexPath.row]
         guard let window = UIApplication.shared.keyWindow else { return }
-        let playerDetailsView = Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
+        playerDetailsView.performAnimations(firstAnimation: true, transform: .identity, alpha: 0.7)
         playerDetailsView.episode = episode
         playerDetailsView.frame = window.frame
         window.addSubview(playerDetailsView)
