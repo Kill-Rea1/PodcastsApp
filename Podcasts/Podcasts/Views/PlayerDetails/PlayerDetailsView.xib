@@ -184,7 +184,6 @@
             <connections>
                 <outlet property="authorLabel" destination="2xe-Tf-arR" id="Rbw-NR-byT"/>
                 <outlet property="contentView" destination="OEz-us-08E" id="qtn-89-Ap1"/>
-                <outlet property="contentViewTopConstraint" destination="7M7-qK-mV6" id="guW-Xa-Dyx"/>
                 <outlet property="episodeImageView" destination="aIn-XC-Th5" id="jeD-f5-V6d"/>
                 <outlet property="playPauseButton" destination="t0k-eb-9LH" id="Mhk-nf-m7K"/>
                 <outlet property="titleLabel" destination="Eyj-c5-3MY" id="oF7-Cw-TQV"/>

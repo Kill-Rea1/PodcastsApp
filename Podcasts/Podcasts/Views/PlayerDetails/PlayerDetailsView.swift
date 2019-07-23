@@ -10,8 +10,20 @@ import UIKit
 import AVKit
 
 class PlayerDetailsView: UIView {
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        let time = CMTime(value: 1, timescale: 3)
+        let times = [NSValue(time: time)]
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
+            self.animateEpisodeImageView()
+        }
+    }
+    
+    
     fileprivate let startTransform = CGAffineTransform(translationX: 0, y: 1000)
     fileprivate let threshold: CGFloat = 200
+    fileprivate let scale: CGFloat = 0.7
     fileprivate let velocityThreshold: CGFloat = 500
     public var episode: Episode! {
         didSet {
@@ -26,7 +38,12 @@ class PlayerDetailsView: UIView {
         }
     }
     @IBOutlet weak var authorLabel: UILabel!
-    @IBOutlet weak var episodeImageView: UIImageView!
+    @IBOutlet weak var episodeImageView: UIImageView! {
+        didSet {
+            episodeImageView.layer.cornerRadius = 8
+            episodeImageView.transform = CGAffineTransform(scaleX: scale, y: scale)
+        }
+    }
     @IBOutlet weak var playPauseButton: UIButton! {
         didSet {
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
@@ -42,8 +59,18 @@ class PlayerDetailsView: UIView {
             player.pause()
             playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
         }
+        animateEpisodeImageView()
     }
     
+    fileprivate func animateEpisodeImageView() {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
+            if self.episodeImageView.transform != .identity {
+                self.episodeImageView.transform = .identity
+            } else {
+                self.episodeImageView.transform = CGAffineTransform(scaleX: self.scale, y: self.scale)
+            }
+        })
+    }
     
     fileprivate let player: AVPlayer = {
         let player = AVPlayer()
