@@ -13,13 +13,9 @@ class PlayerDetailsView: UIView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        let time = CMTime(value: 1, timescale: 3)
-        let times = [NSValue(time: time)]
-        player.addBoundaryTimeObserver(forTimes: times, queue: .main) {
-            self.animateEpisodeImageView()
-        }
+        observerStartsPlayer()
+        observerPlayerCurrentTime()
     }
-    
     
     fileprivate let startTransform = CGAffineTransform(translationX: 0, y: 1000)
     fileprivate let threshold: CGFloat = 200
@@ -31,6 +27,13 @@ class PlayerDetailsView: UIView {
             playEpisode()
         }
     }
+    
+    @IBOutlet weak var currentTimeLabel: UILabel!
+    @IBOutlet weak var durationTimeLabel: UILabel!
+    @IBOutlet weak var currentTimeSlider: UISlider!
+//    @IBAction func currentTimeSlider(_ sender: Any) {
+//    }
+    
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
@@ -48,6 +51,47 @@ class PlayerDetailsView: UIView {
         didSet {
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
             playPauseButton.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+        }
+    }
+    fileprivate let player: AVPlayer = {
+        let player = AVPlayer()
+        player.automaticallyWaitsToMinimizeStalling = false
+        return player
+    }()
+    
+    fileprivate func observerPlayerCurrentTime() {
+        let interval = CMTime(value: 1, timescale: 2)
+        player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] (time) in
+            self?.currentTimeLabel.text = self?.getTimeString(time: time)
+            let duration = self?.player.currentItem?.duration
+            self?.durationTimeLabel.text = self?.getTimeString(time: duration!)
+            self?.updateCurrentTimeSlider()
+        }
+    }
+    
+    fileprivate func updateCurrentTimeSlider() {
+        let currentTimeSeconds = CMTimeGetSeconds(player.currentTime())
+        let durationSeconds = CMTimeGetSeconds(player.currentItem?.duration ?? CMTime(value: 1, timescale: 1))
+        let percentage = currentTimeSeconds / durationSeconds
+        currentTimeSlider.value = Float(percentage)
+    }
+    
+    fileprivate func getTimeString(time: CMTime) -> String {
+        let totalSeconds = Int(CMTimeGetSeconds(time))
+        let seconds = totalSeconds % 60
+        let minutes = totalSeconds / 60
+        if totalSeconds / 3600 > 0 {
+            let hours = totalSeconds / 3600
+            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        }
+        return String(format: "%02d:%02d", minutes, seconds)
+    }
+    
+    fileprivate func observerStartsPlayer() {
+        let time = CMTime(value: 1, timescale: 3)
+        let times = [NSValue(time: time)]
+        player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
+            self?.animateEpisodeImageView()
         }
     }
     
@@ -72,12 +116,6 @@ class PlayerDetailsView: UIView {
         })
     }
     
-    fileprivate let player: AVPlayer = {
-        let player = AVPlayer()
-        player.automaticallyWaitsToMinimizeStalling = false
-        return player
-    }()
-    
     fileprivate func playEpisode() {
         guard let url = URL(string: episode.episodeUrl) else { return }
         let playerItem = AVPlayerItem(url: url)
@@ -94,6 +132,7 @@ class PlayerDetailsView: UIView {
             self.backgroundColor = UIColor(white: 0, alpha: alpha)
         }) { (_) in
             if transform != .identity {
+//                self.player.removeTimeObserver(self)
                 self.removeFromSuperview()
             }
         }
