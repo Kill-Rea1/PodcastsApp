@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AVKit
 
 class PlayerDetailsView: UIView {
     fileprivate let startTransform = CGAffineTransform(translationX: 0, y: 1000)
@@ -14,17 +15,10 @@ class PlayerDetailsView: UIView {
     fileprivate let velocityThreshold: CGFloat = 500
     public var episode: Episode! {
         didSet {
-            titleLabel.text = episode.title
-            authorLabel.text = episode.author
-            episodeImageView.layer.cornerRadius = 8
-            contentView.layer.cornerRadius = 16
-            guard let url = URL(string: episode.imageUrl ?? "") else { return }
-            episodeImageView.sd_setImage(with: url)
-            addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
+            setupViews()
+            playEpisode()
         }
     }
-    @IBOutlet weak var contentViewTopConstraint: NSLayoutConstraint!
-    
     @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
@@ -33,10 +27,35 @@ class PlayerDetailsView: UIView {
     }
     @IBOutlet weak var authorLabel: UILabel!
     @IBOutlet weak var episodeImageView: UIImageView!
+    @IBOutlet weak var playPauseButton: UIButton! {
+        didSet {
+            playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            playPauseButton.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+        }
+    }
     
-    @IBOutlet weak var playPauseButton: UIButton!
-    @IBAction func handleDismiss(_ sender: Any) {
-        performAnimations(transform: startTransform, alpha: 0)
+    @objc fileprivate func handlePlayPause(sender: UIButton) {
+        if player.timeControlStatus == .paused {
+            player.play()
+            playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+        } else {
+            player.pause()
+            playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+        }
+    }
+    
+    
+    fileprivate let player: AVPlayer = {
+        let player = AVPlayer()
+        player.automaticallyWaitsToMinimizeStalling = false
+        return player
+    }()
+    
+    fileprivate func playEpisode() {
+        guard let url = URL(string: episode.episodeUrl) else { return }
+        let playerItem = AVPlayerItem(url: url)
+        player.replaceCurrentItem(with: playerItem)
+        player.play()
     }
     
     public func performAnimations(firstAnimation: Bool = false, transform: CGAffineTransform, alpha: CGFloat) {
@@ -68,5 +87,19 @@ class PlayerDetailsView: UIView {
                 performAnimations(transform: .identity, alpha: 0.7)
             }
         }
+    }
+    
+    fileprivate func setupViews() {
+        titleLabel.text = episode.title
+        authorLabel.text = episode.author
+        episodeImageView.layer.cornerRadius = 8
+        contentView.layer.cornerRadius = 16
+        guard let url = URL(string: episode.imageUrl ?? "") else { return }
+        episodeImageView.sd_setImage(with: url)
+        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
+    }
+    
+    @IBAction func handleDismiss(_ sender: Any) {
+        performAnimations(transform: startTransform, alpha: 0)
     }
 }
