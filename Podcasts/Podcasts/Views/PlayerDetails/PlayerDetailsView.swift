@@ -9,12 +9,24 @@
 import UIKit
 import AVKit
 
+protocol PlayerDetailsDelegate {
+    func dismiss()
+    func maximaze()
+}
+
 class PlayerDetailsView: UIView {
+    
+    static func initFromNib() -> PlayerDetailsView {
+        return Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
+    }
+    
+    var delegate: PlayerDetailsDelegate?
     
     override func awakeFromNib() {
         super.awakeFromNib()
         observerStartsPlayer()
         observerPlayerCurrentTime()
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximaze)))
     }
     
     fileprivate let startTransform = CGAffineTransform(translationX: 0, y: 1000)
@@ -124,52 +136,20 @@ class PlayerDetailsView: UIView {
         player.play()
     }
     
-    public func performAnimations(firstAnimation: Bool = false, transform: CGAffineTransform, alpha: CGFloat) {
-        if firstAnimation {
-            contentView.transform = startTransform
-        }
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.contentView.transform = transform
-            self.backgroundColor = UIColor(white: 0, alpha: alpha)
-        }) { (_) in
-            if transform != .identity {
-//                self.player.removeTimeObserver(self)
-                self.removeFromSuperview()
-            }
-        }
-    }
-    @objc fileprivate func handlePan(gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translation(in: self)
-        let velocity = gesture.velocity(in: self)
-        if gesture.state == .changed {
-            let y = max(0, translation.y)
-            let transform = CGAffineTransform(translationX: 0, y: y)
-            let alpha: CGFloat = 0.7 - y / 1000
-            backgroundColor = UIColor(white: 0, alpha: alpha)
-            contentView.transform = transform
-        } else if gesture.state == .ended {
-            if translation.y > threshold || velocity.y > velocityThreshold {
-                performAnimations(transform: startTransform, alpha: 0)
-            } else {
-                performAnimations(transform: .identity, alpha: 0.7)
-            }
-        }
-    }
-    
     fileprivate func setupViews() {
         titleLabel.text = episode.title
         authorLabel.text = episode.author
         episodeImageView.layer.cornerRadius = 8
-        contentView.layer.cornerRadius = 16
         guard let url = URL(string: episode.imageUrl ?? "") else { return }
         episodeImageView.sd_setImage(with: url)
-        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
     }
     
-    
+    @objc fileprivate func handleTapMaximaze() {
+        delegate?.maximaze()
+    }
     
     @IBAction func handleDismiss(_ sender: Any) {
-        performAnimations(transform: startTransform, alpha: 0)
+        delegate?.dismiss()
     }
     
     @IBAction func handleCurrentTimeSliderChange(_ sender: Any) {
