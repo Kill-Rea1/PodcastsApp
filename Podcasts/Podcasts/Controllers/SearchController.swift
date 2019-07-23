@@ -73,7 +73,7 @@ class SearchController: UITableViewController {
 extension SearchController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
         
-        APIService.shared.fetchPodcasts(searchText: searchText) { (podcasts, error) in
+        APIService.shared.fetchPodcasts(searchText: searchText) { [unowned self] (podcasts, error) in
             if error != nil {
                 return
             }

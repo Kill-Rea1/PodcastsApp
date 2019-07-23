@@ -20,8 +20,10 @@ class EpisodeCell: UITableViewCell {
             pubDateLabel.text = getDate(date: episode.pubDate)
             titleLabel.text = episode.title
             descriptionLabel.text = episode.description
-//            episodeImageView.sd_setImage(with: <#T##URL?#>, completed: <#T##SDExternalCompletionBlock?##SDExternalCompletionBlock?##(UIImage?, Error?, SDImageCacheType, URL?) -> Void#>)
             episodeImageView.layer.cornerRadius = 8
+            guard let imageUrl = episode.imageUrl?.toSecureHTTPS() else { return }
+            guard let url = URL(string: imageUrl) else { return }
+            episodeImageView.sd_setImage(with: url)
         }
     }
     

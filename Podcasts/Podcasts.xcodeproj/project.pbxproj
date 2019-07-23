@@ -24,6 +24,7 @@
 		ED38B87922E66E020088D216 /* Episode.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B87822E66E020088D216 /* Episode.swift */; };
 		ED38B88222E67D930088D216 /* EpisodeCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B88022E67D930088D216 /* EpisodeCell.swift */; };
 		ED38B88322E67D930088D216 /* EpisodeCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED38B88122E67D930088D216 /* EpisodeCell.xib */; };
+		ED38B88622E685160088D216 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B88522E685160088D216 /* Extensions.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -48,6 +49,7 @@
 		ED38B87822E66E020088D216 /* Episode.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Episode.swift; sourceTree = "<group>"; };
 		ED38B88022E67D930088D216 /* EpisodeCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EpisodeCell.swift; sourceTree = "<group>"; };
 		ED38B88122E67D930088D216 /* EpisodeCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = EpisodeCell.xib; sourceTree = "<group>"; };
+		ED38B88522E685160088D216 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -100,6 +102,7 @@
 		ED38B82C22E3A3DF0088D216 /* Podcasts */ = {
 			isa = PBXGroup;
 			children = (
+				ED38B88422E685040088D216 /* Extensions */,
 				ED38B86E22E646850088D216 /* API */,
 				ED38B84622E3A94F0088D216 /* Models */,
 				ED38B84522E3A9490088D216 /* Views */,
@@ -167,6 +170,14 @@
 				ED38B88122E67D930088D216 /* EpisodeCell.xib */,
 			);
 			path = Episode;
+			sourceTree = "<group>";
+		};
+		ED38B88422E685040088D216 /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				ED38B88522E685160088D216 /* Extensions.swift */,
+			);
+			path = Extensions;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -293,6 +304,7 @@
 				ED38B87922E66E020088D216 /* Episode.swift in Sources */,
 				ED38B86922E61DC90088D216 /* SearchController.swift in Sources */,
 				ED38B86B22E61E550088D216 /* Podcast.swift in Sources */,
+				ED38B88622E685160088D216 /* Extensions.swift in Sources */,
 				ED38B83022E3A3DF0088D216 /* FavoritesController.swift in Sources */,
 				ED38B84322E3A5730088D216 /* MainTabController.swift in Sources */,
 				ED38B82E22E3A3DF0088D216 /* AppDelegate.swift in Sources */,
