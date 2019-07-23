@@ -27,3 +27,36 @@ extension RSSFeed {
         return _episodes
     }
 }
+extension UIView {
+    @discardableResult
+    func addConsctraints(_ leading: NSLayoutXAxisAnchor?, _ trailing: NSLayoutXAxisAnchor?, _ top: NSLayoutYAxisAnchor?, _ bottom: NSLayoutYAxisAnchor?, _ padding: UIEdgeInsets = .zero, _ size: CGSize = .zero) -> AnchoredConstraints {
+        translatesAutoresizingMaskIntoConstraints = false
+        var anchoredConstraints = AnchoredConstraints()
+        if let leading = leading {
+            anchoredConstraints.leading = leadingAnchor.constraint(equalTo: leading, constant: padding.left)
+        }
+        if let trailing = trailing {
+            anchoredConstraints.trailing = trailingAnchor.constraint(equalTo: trailing, constant: -padding.right)
+        }
+        if let top = top {
+            anchoredConstraints.top = topAnchor.constraint(equalTo: top, constant: padding.top)
+        }
+        if let bottom = bottom {
+            anchoredConstraints.bottom = bottomAnchor.constraint(equalTo: bottom, constant: -padding.bottom)
+        }
+        
+        if size.width != 0 {
+            anchoredConstraints.width = widthAnchor.constraint(equalToConstant: size.width)
+        }
+        if size.height != 0 {
+            anchoredConstraints.height = heightAnchor.constraint(equalToConstant: size.height)
+        }
+        
+        [anchoredConstraints.leading, anchoredConstraints.trailing, anchoredConstraints.top, anchoredConstraints.bottom, anchoredConstraints.width, anchoredConstraints.height].forEach({$0?.isActive = true})
+        return anchoredConstraints
+    }
+}
+
+struct AnchoredConstraints {
+    var leading, trailing, top, bottom, width, height: NSLayoutConstraint?
+}

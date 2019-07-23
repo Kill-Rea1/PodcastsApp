@@ -61,7 +61,12 @@ class EpisodesController: UITableViewController {
         return 132
     }
     
-    deinit {
-        print("deallocated")
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let episode = episodes[indexPath.row]
+        guard let window = UIApplication.shared.keyWindow else { return }
+        let playerDetailsView = Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
+        playerDetailsView.episode = episode
+        playerDetailsView.frame = window.frame
+        window.addSubview(playerDetailsView)
     }
 }
