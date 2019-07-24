@@ -73,8 +73,8 @@ class MainTabController: UITabBarController {
     
     fileprivate func setupViewControllers() {
         viewControllers = [
+            createViweController(viewController: FavoritesController(collectionViewLayout: UICollectionViewFlowLayout()), title: "Favorites", imageName: "favorites"),
             createViweController(viewController: SearchController(), title: "Search", imageName: "search"),
-            createViweController(viewController: FavoritesController(), title: "Favorites", imageName: "favorites"),
             createViweController(viewController: UIViewController(), title: "Downloads", imageName: "downloads")
         ]
     }

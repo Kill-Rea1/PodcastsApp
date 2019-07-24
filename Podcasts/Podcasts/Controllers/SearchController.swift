@@ -45,6 +45,7 @@ class SearchController: UITableViewController {
         let label = UILabel()
         label.text = "Currently searching"
         label.font = UIFont.systemFont(ofSize: 18, weight: .bold)
+        label.textColor = #colorLiteral(red: 0.5523580313, green: 0.2407458723, blue: 0.6643408537, alpha: 1)
         
         let stackView = UIStackView(arrangedSubviews: [UIView(), activitiIndicatorView, label])
         stackView.alignment = .center
@@ -67,6 +68,7 @@ class SearchController: UITableViewController {
     override func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let label = UILabel()
         label.text = "Please enter search term"
+        label.textColor = #colorLiteral(red: 0.5523580313, green: 0.2407458723, blue: 0.6643408537, alpha: 1)
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 18, weight: .semibold)
         return label

@@ -104,6 +104,7 @@
                             <constraints>
                                 <constraint firstAttribute="height" constant="46" id="qUX-5q-KB5"/>
                             </constraints>
+                            <color key="thumbTintColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                             <connections>
                                 <action selector="handleCurrentTimeSliderChange:" destination="4Sc-wA-zIO" eventType="valueChanged" id="aCj-VP-sH8"/>
                             </connections>

@@ -27,6 +27,7 @@
 		ED38B88622E685160088D216 /* Extensions.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B88522E685160088D216 /* Extensions.swift */; };
 		ED38B88B22E693F00088D216 /* PlayerDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED38B88A22E693F00088D216 /* PlayerDetailsView.xib */; };
 		ED38B88D22E696040088D216 /* PlayerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B88C22E696040088D216 /* PlayerDetailsView.swift */; };
+		EDB9471722E910D1000B3640 /* FavouriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB9471622E910D1000B3640 /* FavouriteCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -54,6 +55,7 @@
 		ED38B88522E685160088D216 /* Extensions.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Extensions.swift; sourceTree = "<group>"; };
 		ED38B88A22E693F00088D216 /* PlayerDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerDetailsView.xib; sourceTree = "<group>"; };
 		ED38B88C22E696040088D216 /* PlayerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailsView.swift; sourceTree = "<group>"; };
+		EDB9471622E910D1000B3640 /* FavouriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteCell.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -138,6 +140,7 @@
 				ED38B88722E693870088D216 /* PlayerDetails */,
 				ED38B87B22E67CBF0088D216 /* Episode */,
 				ED38B87A22E67CA30088D216 /* Podcast */,
+				EDB9471622E910D1000B3640 /* FavouriteCell.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -324,6 +327,7 @@
 				ED38B88222E67D930088D216 /* EpisodeCell.swift in Sources */,
 				ED38B87922E66E020088D216 /* Episode.swift in Sources */,
 				ED38B86922E61DC90088D216 /* SearchController.swift in Sources */,
+				EDB9471722E910D1000B3640 /* FavouriteCell.swift in Sources */,
 				ED38B86B22E61E550088D216 /* Podcast.swift in Sources */,
 				ED38B88622E685160088D216 /* Extensions.swift in Sources */,
 				ED38B83022E3A3DF0088D216 /* FavoritesController.swift in Sources */,

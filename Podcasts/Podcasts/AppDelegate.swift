@@ -16,11 +16,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplication.LaunchOptionsKey: Any]?) -> Bool {
-        let attributedString = [NSAttributedString.Key.foregroundColor: #colorLiteral(red: 0.5137254902, green: 0.2588235294, blue: 0.6431372549, alpha: 1)]
         UINavigationBar.appearance().prefersLargeTitles = true
         UINavigationBar.appearance().tintColor = #colorLiteral(red: 0.5137254902, green: 0.2588235294, blue: 0.6431372549, alpha: 1)
-        UINavigationBar.appearance().titleTextAttributes = attributedString
-        UINavigationBar.appearance().largeTitleTextAttributes = attributedString
         
         window = UIWindow()
         window?.makeKeyAndVisible()

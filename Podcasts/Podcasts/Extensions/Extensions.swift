@@ -76,6 +76,25 @@ extension UIView {
         [anchoredConstraints.leading, anchoredConstraints.trailing, anchoredConstraints.top, anchoredConstraints.bottom, anchoredConstraints.width, anchoredConstraints.height].forEach({$0?.isActive = true})
         return anchoredConstraints
     }
+    
+    func fillSuperview() {
+        translatesAutoresizingMaskIntoConstraints = false
+        if let leading = superview?.leadingAnchor {
+            leadingAnchor.constraint(equalTo: leading).isActive = true
+        }
+        
+        if let trailing = superview?.trailingAnchor {
+            trailingAnchor.constraint(equalTo: trailing).isActive = true
+        }
+        
+        if let top = superview?.topAnchor {
+            topAnchor.constraint(equalTo: top).isActive = true
+        }
+        
+        if let bottom = superview?.bottomAnchor {
+            bottomAnchor.constraint(equalTo: bottom).isActive = true
+        }
+    }
 }
 
 struct AnchoredConstraints {
