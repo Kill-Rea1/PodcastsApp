@@ -32,16 +32,13 @@ extension RSSFeed {
 extension CMTime {
     func toTimeString() -> String {
         if CMTimeGetSeconds(self).isNaN {
-            return "--:--"
+            return "--:--:--"
         }
         let totalSeconds = Int(CMTimeGetSeconds(self))
         let seconds = totalSeconds % 60
         let minutes = totalSeconds / 60
-        if totalSeconds / 3600 > 0 {
-            let hours = totalSeconds / 3600
-            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        }
-        return String(format: "%02d:%02d", minutes, seconds)
+        let hours = totalSeconds / 3600
+        return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
     }
 }
 

@@ -35,6 +35,7 @@ class PlayerDetailsView: UIView {
     fileprivate let velocityThreshold: CGFloat = 500
     public var episode: Episode! {
         didSet {
+            setupNowPlayinInfo()
             setupViews()
             playEpisode()
         }
@@ -93,6 +94,13 @@ class PlayerDetailsView: UIView {
     
     // MARK:- Fileprivate Methods
     
+    fileprivate func setupNowPlayinInfo() {
+        var nowPlaingInfo = [String: Any]()
+        nowPlaingInfo[MPMediaItemPropertyTitle] = episode.title
+        nowPlaingInfo[MPMediaItemPropertyArtist] = episode.author
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlaingInfo
+    }
+    
     fileprivate func enablePlaying() {
         player.play()
         playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
@@ -150,8 +158,21 @@ class PlayerDetailsView: UIView {
             self?.currentTimeLabel.text = time.toTimeString()
             let duration = self?.player.currentItem?.duration
             self?.durationTimeLabel.text = duration?.toTimeString()
+            self?.setupLockscreenCurrentTime()
             self?.updateCurrentTimeSlider()
         }
+    }
+    
+    fileprivate func setupLockscreenCurrentTime() {
+        var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+        
+        guard let currentItem = player.currentItem else { return }
+        let durationInSeconds = CMTimeGetSeconds(currentItem.duration)
+        let elapsedTime = CMTimeGetSeconds(player.currentTime())
+        
+        nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
+        nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = durationInSeconds
+        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
     fileprivate func updateCurrentTimeSlider() {
@@ -211,7 +232,15 @@ class PlayerDetailsView: UIView {
         guard let url = URL(string: episode.imageUrl ?? "") else { return }
         episodeImageView.sd_setImage(with: url)
         miniImageView.layer.cornerRadius = 8
-        miniImageView.sd_setImage(with: url)
+        miniImageView.sd_setImage(with: url) { (image, _, _, _) in
+            guard let image = image else { return }
+            var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
+            let artwork = MPMediaItemArtwork(boundsSize: image.size, requestHandler: { (_) -> UIImage in
+                return image
+            })
+            nowPlayingInfo?[MPMediaItemPropertyArtwork] = artwork
+            MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
+        }
         miniTitleLabel.text = episode.title
     }
     
