@@ -16,6 +16,8 @@ protocol PlayerDetailsDelegate {
 
 class PlayerDetailsView: UIView {
     
+    // MARK:- Properies
+    
     static func initFromNib() -> PlayerDetailsView {
         return Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
     }
@@ -40,10 +42,20 @@ class PlayerDetailsView: UIView {
         }
     }
     
+    // MARK:- IBOutlets
+    @IBOutlet weak var miniImageView: UIImageView!
+    @IBOutlet weak var miniTitleLabel: UILabel!
+    @IBOutlet weak var miniPlayPauseButton: UIButton! {
+        didSet {
+            miniPlayPauseButton.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+        }
+    }
+    
+    @IBOutlet weak var miniPlayerView: UIView!
+    @IBOutlet weak var maximizedPlayerView: UIStackView!
     @IBOutlet weak var currentTimeLabel: UILabel!
     @IBOutlet weak var durationTimeLabel: UILabel!
     @IBOutlet weak var currentTimeSlider: UISlider!
-    @IBOutlet weak var contentView: UIView!
     @IBOutlet weak var titleLabel: UILabel! {
         didSet {
             titleLabel.numberOfLines = 2
@@ -62,6 +74,9 @@ class PlayerDetailsView: UIView {
             playPauseButton.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
         }
     }
+    
+    // MARK:- Fileprivate Methods
+    
     fileprivate let player: AVPlayer = {
         let player = AVPlayer()
         player.automaticallyWaitsToMinimizeStalling = false
@@ -71,9 +86,9 @@ class PlayerDetailsView: UIView {
     fileprivate func observerPlayerCurrentTime() {
         let interval = CMTime(value: 1, timescale: 2)
         player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] (time) in
-            self?.currentTimeLabel.text = self?.getTimeString(time: time)
+            self?.currentTimeLabel.text = time.toTimeString()
             let duration = self?.player.currentItem?.duration
-            self?.durationTimeLabel.text = self?.getTimeString(time: duration!)
+            self?.durationTimeLabel.text = duration?.toTimeString()
             self?.updateCurrentTimeSlider()
         }
     }
@@ -83,21 +98,6 @@ class PlayerDetailsView: UIView {
         let durationSeconds = CMTimeGetSeconds(player.currentItem?.duration ?? CMTime(value: 1, timescale: 1))
         let percentage = currentTimeSeconds / durationSeconds
         currentTimeSlider.value = Float(percentage)
-    }
-    
-    fileprivate func getTimeString(time: CMTime) -> String {
-        var totalSeconds = 0
-        let timeFloat = CMTimeGetSeconds(time)
-        if !(timeFloat.isNaN || timeFloat.isInfinite) {
-            totalSeconds = Int(timeFloat)
-        }
-        let seconds = totalSeconds % 60
-        let minutes = totalSeconds / 60
-        if totalSeconds / 3600 > 0 {
-            let hours = totalSeconds / 3600
-            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
-        }
-        return String(format: "%02d:%02d", minutes, seconds)
     }
     
     fileprivate func observerStartsPlayer() {
@@ -112,9 +112,11 @@ class PlayerDetailsView: UIView {
         if player.timeControlStatus == .paused {
             player.play()
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            miniPlayPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
         } else {
             player.pause()
             playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            miniPlayPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
         }
         animateEpisodeImageView()
     }
@@ -142,10 +144,26 @@ class PlayerDetailsView: UIView {
         episodeImageView.layer.cornerRadius = 8
         guard let url = URL(string: episode.imageUrl ?? "") else { return }
         episodeImageView.sd_setImage(with: url)
+        miniImageView.layer.cornerRadius = 8
+        miniImageView.sd_setImage(with: url)
+        miniTitleLabel.text = episode.title
     }
     
     @objc fileprivate func handleTapMaximaze() {
         delegate?.maximaze()
+    }
+    
+    fileprivate func seekToCurrentTime(delta: Int64) {
+        let fifteenSeconds = CMTimeMake(value: delta, timescale: 1)
+        let seekTime = CMTimeAdd(player.currentTime(), fifteenSeconds)
+        player.seek(to: seekTime)
+    }
+    
+    // MARK:- IBActions
+    @IBAction func handleMiniPlayPause(_ sender: Any) {
+    }
+    @IBAction func handleMiniForward(_ sender: Any) {
+        handleFastForward(sender)
     }
     
     @IBAction func handleDismiss(_ sender: Any) {
@@ -168,12 +186,6 @@ class PlayerDetailsView: UIView {
     
     @IBAction func handleRewind(_ sender: Any) {
         seekToCurrentTime(delta: -15)
-    }
-    
-    fileprivate func seekToCurrentTime(delta: Int64) {
-        let fifteenSeconds = CMTimeMake(value: delta, timescale: 1)
-        let seekTime = CMTimeAdd(player.currentTime(), fifteenSeconds)
-        player.seek(to: seekTime)
     }
     
     @IBAction func handleVolumeChange(_ sender: UISlider) {

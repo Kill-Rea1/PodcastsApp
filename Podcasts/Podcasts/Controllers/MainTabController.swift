@@ -29,6 +29,8 @@ class MainTabController: UITabBarController {
             
             self.view.layoutIfNeeded()
             self.tabBar.transform = .identity
+            self.playerDetailsView.maximizedPlayerView.alpha = 0
+            self.playerDetailsView.miniPlayerView.alpha = 1
         })
     }
     
@@ -45,10 +47,13 @@ class MainTabController: UITabBarController {
             
             self.view.layoutIfNeeded()
             self.tabBar.transform = CGAffineTransform(translationX: 0, y: 100)
+            self.playerDetailsView.maximizedPlayerView.alpha = 1
+            self.playerDetailsView.miniPlayerView.alpha = 0
         })
     }
     
     fileprivate func setupPlayerDetailsView() {
+        playerDetailsView.delegate = self
         view.insertSubview(playerDetailsView, belowSubview: tabBar)
         playerDetailsView.translatesAutoresizingMaskIntoConstraints = false
         maximizedTopConstraint = playerDetailsView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height)
@@ -58,8 +63,6 @@ class MainTabController: UITabBarController {
         playerDetailsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
         playerDetailsView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         playerDetailsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        
-        
     }
     
     fileprivate func setupViewControllers() {

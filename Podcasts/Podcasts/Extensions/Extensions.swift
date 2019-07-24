@@ -8,6 +8,7 @@
 
 import Foundation
 import FeedKit
+import AVKit
 
 extension String {
     func toSecureHTTPS() -> String {
@@ -27,6 +28,24 @@ extension RSSFeed {
         return _episodes
     }
 }
+
+extension CMTime {
+    func toTimeString() -> String {
+        if CMTimeGetSeconds(self).isNaN {
+            return "--:--"
+        }
+        let totalSeconds = Int(CMTimeGetSeconds(self))
+        let seconds = totalSeconds % 60
+        let minutes = totalSeconds / 60
+        if totalSeconds / 3600 > 0 {
+            let hours = totalSeconds / 3600
+            return String(format: "%02d:%02d:%02d", hours, minutes, seconds)
+        }
+        return String(format: "%02d:%02d", minutes, seconds)
+    }
+}
+
+
 extension UIView {
     @discardableResult
     func addConsctraints(_ leading: NSLayoutXAxisAnchor?, _ trailing: NSLayoutXAxisAnchor?, _ top: NSLayoutYAxisAnchor?, _ bottom: NSLayoutYAxisAnchor?, _ padding: UIEdgeInsets = .zero, _ size: CGSize = .zero) -> AnchoredConstraints {
