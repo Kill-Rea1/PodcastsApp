@@ -23,6 +23,7 @@ class MainTabController: UITabBarController {
     }
     
     fileprivate func performAnimations(maximized: Bool) {
+        playerDetailsView.isMaximized = maximized
         if maximized {
             minimizedTopConstraint.isActive = false
             maximizedTopConstraint.constant = 0

@@ -22,7 +22,8 @@ class PlayerDetailsView: UIView {
         return Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
     }
     
-    var delegate: PlayerDetailsDelegate?
+    public var delegate: PlayerDetailsDelegate?
+    public var isMaximized = true
     
     override func awakeFromNib() {
         super.awakeFromNib()
@@ -31,8 +32,6 @@ class PlayerDetailsView: UIView {
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximaze)))
         addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
     }
-    fileprivate var isMaximized = true
-    fileprivate let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
     fileprivate let threshold: CGFloat = 200
     fileprivate let scale: CGFloat = 0.7
     fileprivate let velocityThreshold: CGFloat = 500
@@ -126,11 +125,9 @@ class PlayerDetailsView: UIView {
     
     fileprivate func shouldChange() {
         if isMaximized {
-            isMaximized = false
             delegate?.dismiss()
         } else {
             delegate?.maximize()
-            isMaximized = true
         }
     }
     
@@ -169,26 +166,29 @@ class PlayerDetailsView: UIView {
         let time = CMTime(value: 1, timescale: 3)
         let times = [NSValue(time: time)]
         player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
-            self?.animateEpisodeImageView()
+            self?.animateEpisodeImageView(true)
         }
     }
     
     @objc fileprivate func handlePlayPause(sender: UIButton) {
+        var isPlaying: Bool
         if player.timeControlStatus == .paused {
             player.play()
             playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
             miniPlayPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            isPlaying = true
         } else {
             player.pause()
             playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
             miniPlayPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+            isPlaying = false
         }
-        animateEpisodeImageView()
+        animateEpisodeImageView(isPlaying)
     }
     
-    fileprivate func animateEpisodeImageView() {
+    fileprivate func animateEpisodeImageView(_ isPlaying: Bool) {
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 1, initialSpringVelocity: 1, options: .curveEaseInOut, animations: {
-            if self.episodeImageView.transform != .identity {
+            if isPlaying {
                 self.episodeImageView.transform = .identity
             } else {
                 self.episodeImageView.transform = CGAffineTransform(scaleX: self.scale, y: self.scale)
@@ -215,7 +215,6 @@ class PlayerDetailsView: UIView {
     }
     
     @objc fileprivate func handleTapMaximaze() {
-        isMaximized = true
         delegate?.maximize()
     }
     
@@ -228,7 +227,6 @@ class PlayerDetailsView: UIView {
     // MARK:- IBActions
     
     @IBAction func handleDismiss(_ sender: Any) {
-        isMaximized = false
         delegate?.dismiss()
     }
     
