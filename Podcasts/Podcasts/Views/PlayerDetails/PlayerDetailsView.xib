@@ -19,51 +19,61 @@
                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="zId-Rt-tUp">
                     <rect key="frame" x="0.0" y="44" width="414" height="64"/>
                     <subviews>
-                        <stackView opaque="NO" contentMode="scaleToFill" alignment="center" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HE5-qU-kuS">
+                        <view alpha="0.29999999999999999" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="10L-jT-2GW">
+                            <rect key="frame" x="0.0" y="0.0" width="414" height="0.5"/>
+                            <color key="backgroundColor" white="0.66666666666666663" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            <constraints>
+                                <constraint firstAttribute="height" constant="0.5" id="tWq-gV-Y4T"/>
+                            </constraints>
+                        </view>
+                        <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="HE5-qU-kuS">
                             <rect key="frame" x="8" y="8" width="398" height="48"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="appicon" translatesAutoresizingMaskIntoConstraints="NO" id="6ma-aZ-WT3">
                                     <rect key="frame" x="0.0" y="0.0" width="48" height="48"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="48" id="i7s-hB-SJt"/>
                                     </constraints>
                                 </imageView>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Episode Title" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="biS-4C-JRc">
-                                    <rect key="frame" x="56" y="15" width="254" height="18"/>
+                                    <rect key="frame" x="56" y="0.0" width="230" height="48"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="eUl-Zb-gbJ">
-                                    <rect key="frame" x="318" y="6" width="36" height="36"/>
+                                    <rect key="frame" x="294" y="0.0" width="48" height="48"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="36" id="Rog-Bq-DmP"/>
-                                        <constraint firstAttribute="height" constant="36" id="jb8-EZ-Wgb"/>
+                                        <constraint firstAttribute="width" constant="48" id="Rog-Bq-DmP"/>
                                     </constraints>
                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <state key="normal" image="pause"/>
                                 </button>
                                 <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="HiS-FV-qeC">
-                                    <rect key="frame" x="362" y="6" width="36" height="36"/>
+                                    <rect key="frame" x="350" y="0.0" width="48" height="48"/>
+                                    <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="36" id="Cs9-Pz-Dnx"/>
-                                        <constraint firstAttribute="height" constant="36" id="EWb-yq-QdG"/>
+                                        <constraint firstAttribute="width" constant="48" id="Cs9-Pz-Dnx"/>
                                     </constraints>
                                     <color key="tintColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                     <state key="normal" image="fastforward15"/>
-                                    <connections>
-                                        <action selector="handleMiniForward:" destination="4Sc-wA-zIO" eventType="touchUpInside" id="7MJ-C0-tM1"/>
-                                    </connections>
                                 </button>
                             </subviews>
+                            <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         </stackView>
                     </subviews>
                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     <constraints>
                         <constraint firstAttribute="height" constant="64" id="4e9-hf-XOZ"/>
                         <constraint firstItem="HE5-qU-kuS" firstAttribute="top" secondItem="zId-Rt-tUp" secondAttribute="top" constant="8" id="LHg-00-HGA"/>
+                        <constraint firstAttribute="trailing" secondItem="10L-jT-2GW" secondAttribute="trailing" id="LJc-bt-jnz"/>
+                        <constraint firstItem="10L-jT-2GW" firstAttribute="leading" secondItem="zId-Rt-tUp" secondAttribute="leading" id="QOh-IB-3DI"/>
                         <constraint firstItem="HE5-qU-kuS" firstAttribute="leading" secondItem="zId-Rt-tUp" secondAttribute="leading" constant="8" id="SuS-Ol-nDY"/>
                         <constraint firstAttribute="bottom" secondItem="HE5-qU-kuS" secondAttribute="bottom" constant="8" id="TxJ-E1-Pkt"/>
+                        <constraint firstItem="10L-jT-2GW" firstAttribute="top" secondItem="zId-Rt-tUp" secondAttribute="top" id="hb7-kb-IJO"/>
                         <constraint firstAttribute="trailing" secondItem="HE5-qU-kuS" secondAttribute="trailing" constant="8" id="vfy-fJ-sfT"/>
                     </constraints>
                 </view>
@@ -219,6 +229,7 @@
                             </constraints>
                         </stackView>
                     </subviews>
+                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                 </stackView>
             </subviews>
             <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
@@ -239,6 +250,7 @@
                 <outlet property="durationTimeLabel" destination="CHU-Hh-xvr" id="Q7Q-1x-yyd"/>
                 <outlet property="episodeImageView" destination="aIn-XC-Th5" id="jeD-f5-V6d"/>
                 <outlet property="maximizedPlayerView" destination="9i2-qZ-wJa" id="7C8-h1-J8z"/>
+                <outlet property="miniForwardButton" destination="HiS-FV-qeC" id="EEU-Ne-Pzw"/>
                 <outlet property="miniImageView" destination="6ma-aZ-WT3" id="BBy-QD-Y2k"/>
                 <outlet property="miniPlayPauseButton" destination="eUl-Zb-gbJ" id="S52-BX-fM1"/>
                 <outlet property="miniPlayerView" destination="zId-Rt-tUp" id="q47-rg-oLB"/>

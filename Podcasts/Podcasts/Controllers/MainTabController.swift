@@ -10,9 +10,10 @@ import UIKit
 
 class MainTabController: UITabBarController {
     
-    var maximizedTopConstraint: NSLayoutConstraint!
-    var minimizedTopConstraint: NSLayoutConstraint!
-    let playerDetailsView = PlayerDetailsView.initFromNib()
+    fileprivate var maximizedTopConstraint: NSLayoutConstraint!
+    fileprivate var minimizedTopConstraint: NSLayoutConstraint!
+    fileprivate var bottomConstraint: NSLayoutConstraint!
+    fileprivate let playerDetailsView = PlayerDetailsView.initFromNib()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,35 +22,35 @@ class MainTabController: UITabBarController {
         setupPlayerDetailsView()
     }
     
-    fileprivate func minimizePlayerDetails() {
-        maximizedTopConstraint.isActive = false
-        minimizedTopConstraint.isActive = true
-        
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            
-            self.view.layoutIfNeeded()
-            self.tabBar.transform = .identity
-            self.playerDetailsView.maximizedPlayerView.alpha = 0
-            self.playerDetailsView.miniPlayerView.alpha = 1
-        })
-    }
-    
-    func maximizePlayerDetails(episode: Episode?) {
-        maximizedTopConstraint.isActive = true
-        maximizedTopConstraint.constant = 0
-        minimizedTopConstraint.isActive = false
-        
-        if episode != nil {
-            playerDetailsView.episode = episode
+    fileprivate func performAnimations(maximized: Bool) {
+        if maximized {
+            minimizedTopConstraint.isActive = false
+            maximizedTopConstraint.constant = 0
+            bottomConstraint.constant = 0
+            maximizedTopConstraint.isActive = true
+        } else {
+            maximizedTopConstraint.isActive = false
+            bottomConstraint.constant = view.frame.height - tabBar.frame.height - 64
+            minimizedTopConstraint.isActive = true
         }
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            
             self.view.layoutIfNeeded()
-            self.tabBar.transform = CGAffineTransform(translationX: 0, y: 100)
-            self.playerDetailsView.maximizedPlayerView.alpha = 1
-            self.playerDetailsView.miniPlayerView.alpha = 0
+            self.tabBar.transform = maximized ? CGAffineTransform(translationX: 0, y: 100) : .identity
+            self.playerDetailsView.maximizedPlayerView.alpha = maximized ? 1 : 0
+            self.playerDetailsView.miniPlayerView.alpha = maximized ? 0 : 1
         })
+    }
+    
+    fileprivate func minimizePlayerDetails() {
+        performAnimations(maximized: false)
+    }
+    
+    public func maximizePlayerDetails(episode: Episode?) {
+        if episode != nil {
+            playerDetailsView.episode = episode
+        }
+        performAnimations(maximized: true)
     }
     
     fileprivate func setupPlayerDetailsView() {
@@ -57,11 +58,12 @@ class MainTabController: UITabBarController {
         view.insertSubview(playerDetailsView, belowSubview: tabBar)
         playerDetailsView.translatesAutoresizingMaskIntoConstraints = false
         maximizedTopConstraint = playerDetailsView.topAnchor.constraint(equalTo: view.topAnchor, constant: view.frame.height)
+        bottomConstraint = playerDetailsView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: view.frame.height)
+        bottomConstraint.isActive = true
         maximizedTopConstraint.isActive = true
         minimizedTopConstraint = playerDetailsView.topAnchor.constraint(equalTo: tabBar.topAnchor, constant: -64)
         
         playerDetailsView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        playerDetailsView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
         playerDetailsView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
     }
     
@@ -89,7 +91,7 @@ extension MainTabController: PlayerDetailsDelegate {
         minimizePlayerDetails()
     }
     
-    func maximaze() {
+    func maximize() {
         maximizePlayerDetails(episode: nil)
     }
 }

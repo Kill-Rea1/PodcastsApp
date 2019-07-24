@@ -11,7 +11,7 @@ import AVKit
 
 protocol PlayerDetailsDelegate {
     func dismiss()
-    func maximaze()
+    func maximize()
 }
 
 class PlayerDetailsView: UIView {
@@ -29,9 +29,10 @@ class PlayerDetailsView: UIView {
         observerStartsPlayer()
         observerPlayerCurrentTime()
         addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximaze)))
+        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
     }
-    
-    fileprivate let startTransform = CGAffineTransform(translationX: 0, y: 1000)
+    fileprivate var isMaximized = true
+    fileprivate let panGesture = UIPanGestureRecognizer(target: self, action: #selector(handlePan))
     fileprivate let threshold: CGFloat = 200
     fileprivate let scale: CGFloat = 0.7
     fileprivate let velocityThreshold: CGFloat = 500
@@ -47,7 +48,14 @@ class PlayerDetailsView: UIView {
     @IBOutlet weak var miniTitleLabel: UILabel!
     @IBOutlet weak var miniPlayPauseButton: UIButton! {
         didSet {
+            miniPlayPauseButton.imageEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 8)
             miniPlayPauseButton.addTarget(self, action: #selector(handlePlayPause), for: .touchUpInside)
+        }
+    }
+    @IBOutlet weak var miniForwardButton: UIButton! {
+        didSet {
+            miniForwardButton.addTarget(self, action: #selector(handleFastForward(_:)), for: .touchUpInside)
+            miniForwardButton.imageEdgeInsets = .init(top: 8, left: 8, bottom: 8, right: 8)
         }
     }
     
@@ -76,6 +84,63 @@ class PlayerDetailsView: UIView {
     }
     
     // MARK:- Fileprivate Methods
+    
+    @objc fileprivate func handlePan(gesture: UIPanGestureRecognizer) {
+        if gesture.state == .changed {
+            handleChanged(gesture)
+        } else if gesture.state == .ended {
+            handleEnded(gesture)
+        }
+    }
+    
+    fileprivate func handleChanged(_ gesture: UIPanGestureRecognizer) {
+        let translation = gesture.translation(in: self.superview)
+        if !isMaximized {
+            miniPlayerView.alpha = 1 + translation.y / threshold
+            maximizedPlayerView.alpha = 0 - translation.y / threshold
+        }
+        transform = CGAffineTransform(translationX: 0, y: translation.y)
+    }
+    
+    fileprivate func handleEnded(_ gesture: UIPanGestureRecognizer) {
+        var translation = gesture.translation(in: self.superview).y
+        var velocity = gesture.velocity(in: self.superview).y
+        if !isMaximized {
+            translation = abs(translation)
+            velocity = abs(translation)
+        }
+        let shoudlChange = translation > threshold || velocity > velocityThreshold
+        performAnimations(shoudlChange)
+    }
+    
+    fileprivate func performAnimations(_ shoudlChange: Bool) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.transform = .identity
+            if shoudlChange {
+                self.shouldChange()
+            } else {
+                self.shouldStay()
+            }
+        })
+    }
+    
+    fileprivate func shouldChange() {
+        if isMaximized {
+            isMaximized = false
+            delegate?.dismiss()
+        } else {
+            delegate?.maximize()
+            isMaximized = true
+        }
+    }
+    
+    fileprivate func shouldStay() {
+        transform = .identity
+        if !isMaximized {
+            miniPlayerView.alpha = 1
+            maximizedPlayerView.alpha = 0
+        }
+    }
     
     fileprivate let player: AVPlayer = {
         let player = AVPlayer()
@@ -150,7 +215,8 @@ class PlayerDetailsView: UIView {
     }
     
     @objc fileprivate func handleTapMaximaze() {
-        delegate?.maximaze()
+        isMaximized = true
+        delegate?.maximize()
     }
     
     fileprivate func seekToCurrentTime(delta: Int64) {
@@ -160,13 +226,9 @@ class PlayerDetailsView: UIView {
     }
     
     // MARK:- IBActions
-    @IBAction func handleMiniPlayPause(_ sender: Any) {
-    }
-    @IBAction func handleMiniForward(_ sender: Any) {
-        handleFastForward(sender)
-    }
     
     @IBAction func handleDismiss(_ sender: Any) {
+        isMaximized = false
         delegate?.dismiss()
     }
     
