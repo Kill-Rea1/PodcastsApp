@@ -23,6 +23,7 @@ class PlayerDetailsView: UIView {
     
     // MARK:- Properies
     
+    public var playlistEpisodes = [Episode]()
     public var delegate: PlayerDetailsDelegate?
     public var isMaximized = true
     fileprivate let player: AVPlayer = {
@@ -118,6 +119,7 @@ class PlayerDetailsView: UIView {
     fileprivate func setupRemoteControl() {
         UIApplication.shared.beginReceivingRemoteControlEvents()
         let commandCenter = MPRemoteCommandCenter.shared()
+        
         commandCenter.playCommand.isEnabled = true
         commandCenter.playCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
             self.enablePlaying()
@@ -137,6 +139,37 @@ class PlayerDetailsView: UIView {
             self.handlePlayPause()
             return .success
         }
+        
+        commandCenter.nextTrackCommand.addTarget(self, action: #selector(handleNextTrack))
+        commandCenter.previousTrackCommand.addTarget(self, action: #selector(handlePreviousTrack))
+    }
+    
+    @objc fileprivate func handleNextTrack() {
+        changeEpisodeTo(1)
+    }
+    
+    @objc fileprivate func handlePreviousTrack() {
+        changeEpisodeTo(-1)
+    }
+    
+    fileprivate func changeEpisodeTo(_ newIndex: Int) {
+        if playlistEpisodes.isEmpty {
+            return
+        }
+        
+        let currentEpisodeIndex = playlistEpisodes.firstIndex { (episode) -> Bool in
+            return self.episode.title == episode.title && self.episode.author == episode.author
+        }
+        guard let index = currentEpisodeIndex else { return }
+        var nextEpisode: Episode
+        if index + newIndex > playlistEpisodes.count - 1 {
+            nextEpisode = playlistEpisodes[0]
+        } else if index + newIndex < 0 {
+            nextEpisode = playlistEpisodes[playlistEpisodes.count - 1]
+        } else {
+            nextEpisode = playlistEpisodes[index + newIndex]
+        }
+        episode = nextEpisode
     }
     
     fileprivate func setupElapsedTime() {

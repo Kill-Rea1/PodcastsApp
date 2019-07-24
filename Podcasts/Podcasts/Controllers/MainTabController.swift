@@ -47,9 +47,12 @@ class MainTabController: UITabBarController {
         performAnimations(maximized: false)
     }
     
-    public func maximizePlayerDetails(episode: Episode?) {
+    public func maximizePlayerDetails(episode: Episode?, playlistEpisodes: [Episode] = []) {
         if episode != nil {
             playerDetailsView.episode = episode
+        }
+        if !playlistEpisodes.isEmpty {
+            playerDetailsView.playlistEpisodes = playlistEpisodes
         }
         performAnimations(maximized: true)
     }
