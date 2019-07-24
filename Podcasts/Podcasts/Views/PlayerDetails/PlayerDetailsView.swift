@@ -121,12 +121,14 @@ class PlayerDetailsView: UIView {
         commandCenter.playCommand.isEnabled = true
         commandCenter.playCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
             self.enablePlaying()
+            self.setupElapsedTime()
             return .success
         }
         
         commandCenter.pauseCommand.isEnabled = true
         commandCenter.pauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
             self.enablePausing()
+            self.setupElapsedTime()
             return .success
         }
         
@@ -135,6 +137,11 @@ class PlayerDetailsView: UIView {
             self.handlePlayPause()
             return .success
         }
+    }
+    
+    fileprivate func setupElapsedTime() {
+        let elapsedTime = CMTimeGetSeconds(player.currentTime())
+        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
     }
     
     fileprivate func setupAudioSession() {
@@ -158,21 +165,8 @@ class PlayerDetailsView: UIView {
             self?.currentTimeLabel.text = time.toTimeString()
             let duration = self?.player.currentItem?.duration
             self?.durationTimeLabel.text = duration?.toTimeString()
-            self?.setupLockscreenCurrentTime()
             self?.updateCurrentTimeSlider()
         }
-    }
-    
-    fileprivate func setupLockscreenCurrentTime() {
-        var nowPlayingInfo = MPNowPlayingInfoCenter.default().nowPlayingInfo
-        
-        guard let currentItem = player.currentItem else { return }
-        let durationInSeconds = CMTimeGetSeconds(currentItem.duration)
-        let elapsedTime = CMTimeGetSeconds(player.currentTime())
-        
-        nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = elapsedTime
-        nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = durationInSeconds
-        MPNowPlayingInfoCenter.default().nowPlayingInfo = nowPlayingInfo
     }
     
     fileprivate func updateCurrentTimeSlider() {
@@ -189,7 +183,14 @@ class PlayerDetailsView: UIView {
             self?.animateEpisodeImageView(true)
             self?.playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
             self?.miniPlayPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            self?.setupLockscreenDuration()
         }
+    }
+    
+    fileprivate func setupLockscreenDuration() {
+        guard let duration = player.currentItem?.duration else { return }
+        let durationInSeconds = CMTimeGetSeconds(duration)
+        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPMediaItemPropertyPlaybackDuration] = durationInSeconds
     }
     
     @objc fileprivate func handlePlayPause() {
@@ -266,7 +267,7 @@ class PlayerDetailsView: UIView {
         let durationInSeconds = CMTimeGetSeconds(duration)
         let seekTimeInSeconds = Float64(percentage) * durationInSeconds
         let seekTime = CMTimeMakeWithSeconds(seekTimeInSeconds, preferredTimescale: 1)
-        
+        MPNowPlayingInfoCenter.default().nowPlayingInfo?[MPNowPlayingInfoPropertyElapsedPlaybackTime] = seekTimeInSeconds
         player.seek(to: seekTime)
     }
     
