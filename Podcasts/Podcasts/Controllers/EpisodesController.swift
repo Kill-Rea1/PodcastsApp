@@ -12,6 +12,7 @@ import FeedKit
 class EpisodesController: UITableViewController {
     
     fileprivate let cellId = "episodesCell"
+    fileprivate let favoritedPodcatKey = "favoritedPodcatKey"
     fileprivate var episodes = [Episode]()
     public var podcast: Podcast? {
         didSet {
@@ -23,8 +24,36 @@ class EpisodesController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupTableView()
+        navigationBarItems()
     }
     
+    fileprivate func navigationBarItems() {
+        navigationItem.rightBarButtonItems = [
+            UIBarButtonItem(title: "Favorite", style: .plain, target: self, action: #selector(handleSaveFavourite)),
+            UIBarButtonItem(title: "Fetch", style: .plain, target: self, action: #selector(handleFetchSavedPodcasts))
+        ]
+    }
+    
+    @objc fileprivate func handleFetchSavedPodcasts() {
+        guard let data = UserDefaults.standard.data(forKey: favoritedPodcatKey) else { return }
+        do {
+            let podcast = try NSKeyedUnarchiver.unarchivedObject(ofClass: Podcast.self, from: data)
+            print(podcast?.trackName ?? "")
+        } catch let unarchiveError {
+            print("Failed to unarchive data:", unarchiveError)
+        }
+    }
+    
+    @objc fileprivate func handleSaveFavourite() {
+        guard let podcast = podcast else { return }
+        do {
+            let data = try NSKeyedArchiver.archivedData(withRootObject: podcast, requiringSecureCoding: false)
+            UserDefaults.standard.set(data, forKey: favoritedPodcatKey)
+        } catch let archiveError {
+            print("Failed to archive data:", archiveError)
+        }
+    }
+
     fileprivate func fetchEpisodes() {
         guard let feedUrl = podcast?.feedUrl else { return }
         APIService.shared.fetchEpisodes(feedUrl: feedUrl) { (episodes, error) in
