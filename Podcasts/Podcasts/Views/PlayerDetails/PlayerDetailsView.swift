@@ -8,6 +8,7 @@
 
 import UIKit
 import AVKit
+import MediaPlayer
 
 protocol PlayerDetailsDelegate {
     func dismiss()
@@ -16,22 +17,19 @@ protocol PlayerDetailsDelegate {
 
 class PlayerDetailsView: UIView {
     
-    // MARK:- Properies
-    
     static func initFromNib() -> PlayerDetailsView {
         return Bundle.main.loadNibNamed("PlayerDetailsView", owner: self, options: nil)?.first as! PlayerDetailsView
     }
     
+    // MARK:- Properies
+    
     public var delegate: PlayerDetailsDelegate?
     public var isMaximized = true
-    
-    override func awakeFromNib() {
-        super.awakeFromNib()
-        observerStartsPlayer()
-        observerPlayerCurrentTime()
-        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximaze)))
-        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
-    }
+    fileprivate let player: AVPlayer = {
+        let player = AVPlayer()
+        player.automaticallyWaitsToMinimizeStalling = false
+        return player
+    }()
     fileprivate let threshold: CGFloat = 200
     fileprivate let scale: CGFloat = 0.7
     fileprivate let velocityThreshold: CGFloat = 500
@@ -40,6 +38,17 @@ class PlayerDetailsView: UIView {
             setupViews()
             playEpisode()
         }
+    }
+    
+    // MARK:- Initilization
+    
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        observerStartsPlayer()
+        observerPlayerCurrentTime()
+        setupGestures()
+        setupAudioSession()
+        setupRemoteControl()
     }
     
     // MARK:- IBOutlets
@@ -84,66 +93,56 @@ class PlayerDetailsView: UIView {
     
     // MARK:- Fileprivate Methods
     
-    @objc fileprivate func handlePan(gesture: UIPanGestureRecognizer) {
-        if gesture.state == .changed {
-            handleChanged(gesture)
-        } else if gesture.state == .ended {
-            handleEnded(gesture)
+    fileprivate func enablePlaying() {
+        player.play()
+        playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+        miniPlayPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+        animateEpisodeImageView(true)
+    }
+    
+    fileprivate func enablePausing() {
+        player.pause()
+        playPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+        miniPlayPauseButton.setImage(#imageLiteral(resourceName: "play"), for: .normal)
+        animateEpisodeImageView(false)
+    }
+    
+    fileprivate func setupRemoteControl() {
+        UIApplication.shared.beginReceivingRemoteControlEvents()
+        let commandCenter = MPRemoteCommandCenter.shared()
+        commandCenter.playCommand.isEnabled = true
+        commandCenter.playCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            self.enablePlaying()
+            return .success
+        }
+        
+        commandCenter.pauseCommand.isEnabled = true
+        commandCenter.pauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            self.enablePausing()
+            return .success
+        }
+        
+        commandCenter.togglePlayPauseCommand.isEnabled = true
+        commandCenter.togglePlayPauseCommand.addTarget { (_) -> MPRemoteCommandHandlerStatus in
+            self.handlePlayPause()
+            return .success
         }
     }
     
-    fileprivate func handleChanged(_ gesture: UIPanGestureRecognizer) {
-        let translation = gesture.translation(in: self.superview)
-        if !isMaximized {
-            miniPlayerView.alpha = 1 + translation.y / threshold
-            maximizedPlayerView.alpha = 0 - translation.y / threshold
+    fileprivate func setupAudioSession() {
+        do {
+            try AVAudioSession.sharedInstance().setCategory(AVAudioSession.Category.playback)
+            try AVAudioSession.sharedInstance().setActive(true)
+        } catch let error {
+            print("Failed to activate sesstion:", error)
         }
-        transform = CGAffineTransform(translationX: 0, y: translation.y)
+        
     }
     
-    fileprivate func handleEnded(_ gesture: UIPanGestureRecognizer) {
-        var translation = gesture.translation(in: self.superview).y
-        var velocity = gesture.velocity(in: self.superview).y
-        if !isMaximized {
-            translation = abs(translation)
-            velocity = abs(translation)
-        }
-        let shoudlChange = translation > threshold || velocity > velocityThreshold
-        performAnimations(shoudlChange)
+    fileprivate func setupGestures() {
+        addGestureRecognizer(UITapGestureRecognizer(target: self, action: #selector(handleTapMaximaze)))
+        addGestureRecognizer(UIPanGestureRecognizer(target: self, action: #selector(handlePan)))
     }
-    
-    fileprivate func performAnimations(_ shoudlChange: Bool) {
-        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
-            self.transform = .identity
-            if shoudlChange {
-                self.shouldChange()
-            } else {
-                self.shouldStay()
-            }
-        })
-    }
-    
-    fileprivate func shouldChange() {
-        if isMaximized {
-            delegate?.dismiss()
-        } else {
-            delegate?.maximize()
-        }
-    }
-    
-    fileprivate func shouldStay() {
-        transform = .identity
-        if !isMaximized {
-            miniPlayerView.alpha = 1
-            maximizedPlayerView.alpha = 0
-        }
-    }
-    
-    fileprivate let player: AVPlayer = {
-        let player = AVPlayer()
-        player.automaticallyWaitsToMinimizeStalling = false
-        return player
-    }()
     
     fileprivate func observerPlayerCurrentTime() {
         let interval = CMTime(value: 1, timescale: 2)
@@ -167,10 +166,12 @@ class PlayerDetailsView: UIView {
         let times = [NSValue(time: time)]
         player.addBoundaryTimeObserver(forTimes: times, queue: .main) { [weak self] in
             self?.animateEpisodeImageView(true)
+            self?.playPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
+            self?.miniPlayPauseButton.setImage(#imageLiteral(resourceName: "pause"), for: .normal)
         }
     }
     
-    @objc fileprivate func handlePlayPause(sender: UIButton) {
+    @objc fileprivate func handlePlayPause() {
         var isPlaying: Bool
         if player.timeControlStatus == .paused {
             player.play()
@@ -250,5 +251,68 @@ class PlayerDetailsView: UIView {
     
     @IBAction func handleVolumeChange(_ sender: UISlider) {
         player.volume = sender.value
+    }
+}
+
+// MARK:- PanGesture Methods
+
+extension PlayerDetailsView {
+    
+    @objc fileprivate func handlePan(gesture: UIPanGestureRecognizer) {
+        if gesture.state == .changed {
+            handleChanged(gesture)
+        } else if gesture.state == .ended {
+            handleEnded(gesture)
+        }
+    }
+    
+    fileprivate func handleChanged(_ gesture: UIPanGestureRecognizer) {
+        var translationY = gesture.translation(in: self.superview).y
+        if !isMaximized {
+            miniPlayerView.alpha = 1 + translationY / threshold
+            maximizedPlayerView.alpha = 0 - translationY / threshold
+            translationY = min(0, translationY)
+        } else {
+            translationY = max(0, translationY)
+        }
+        transform = CGAffineTransform(translationX: 0, y: translationY)
+    }
+    
+    fileprivate func handleEnded(_ gesture: UIPanGestureRecognizer) {
+        var translation = gesture.translation(in: self.superview).y
+        var velocity = gesture.velocity(in: self.superview).y
+        if !isMaximized {
+            translation = abs(translation)
+            velocity = abs(translation)
+        }
+        let shoudlChange = translation > threshold || velocity > velocityThreshold
+        performAnimations(shoudlChange)
+    }
+    
+    fileprivate func performAnimations(_ shoudlChange: Bool) {
+        UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
+            self.transform = .identity
+            if shoudlChange {
+                self.shouldChange()
+            } else {
+                self.shouldStay()
+            }
+        })
+    }
+    
+    fileprivate func shouldChange() {
+        if isMaximized {
+            delegate?.dismiss()
+        } else {
+            delegate?.maximize()
+        }
+    }
+    
+    fileprivate func shouldStay() {
+        transform = .identity
+        if !isMaximized {
+            miniPlayerView.alpha = 1
+            maximizedPlayerView.alpha = 0
+        }
     }
 }

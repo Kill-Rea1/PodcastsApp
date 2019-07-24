@@ -45,6 +45,11 @@ extension CMTime {
     }
 }
 
+extension UIApplication {
+    static func mainTabBarController() -> MainTabController {
+        return shared.keyWindow?.rootViewController as! MainTabController
+    }
+}
 
 extension UIView {
     @discardableResult

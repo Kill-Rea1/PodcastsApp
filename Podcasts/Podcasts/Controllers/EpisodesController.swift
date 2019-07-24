@@ -11,7 +11,6 @@ import FeedKit
 
 class EpisodesController: UITableViewController {
     
-    var delegate: PlayerDetailsDelegate = (UIApplication.shared.keyWindow?.rootViewController as! MainTabController)
     fileprivate let cellId = "episodesCell"
     fileprivate var episodes = [Episode]()
     public var podcast: Podcast? {
@@ -75,7 +74,7 @@ class EpisodesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let episode = episodes[indexPath.row]
-        let mainTabController = UIApplication.shared.keyWindow?.rootViewController as! MainTabController
+        let mainTabController = UIApplication.mainTabBarController()
         mainTabController.maximizePlayerDetails(episode: episode)
     }
 }

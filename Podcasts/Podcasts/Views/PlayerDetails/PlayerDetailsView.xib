@@ -78,7 +78,7 @@
                     </constraints>
                 </view>
                 <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="5" translatesAutoresizingMaskIntoConstraints="NO" id="9i2-qZ-wJa">
-                    <rect key="frame" x="24" y="44" width="366" height="818"/>
+                    <rect key="frame" x="24" y="44" width="366" height="794"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Me0-WJ-Vwp">
                             <rect key="frame" x="0.0" y="0.0" width="366" height="44"/>
@@ -105,8 +105,7 @@
                                 <constraint firstAttribute="height" constant="46" id="qUX-5q-KB5"/>
                             </constraints>
                             <connections>
-                                <action selector="currentTimeSlider:" destination="4Sc-wA-zIO" eventType="valueChanged" id="7hr-k8-UDg"/>
-                                <action selector="handleCurrentTimeSliderChange:" destination="4Sc-wA-zIO" eventType="valueChanged" id="o4A-w4-JOK"/>
+                                <action selector="handleCurrentTimeSliderChange:" destination="4Sc-wA-zIO" eventType="valueChanged" id="aCj-VP-sH8"/>
                             </connections>
                         </slider>
                         <stackView opaque="NO" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="QgM-ud-NMn">
@@ -152,14 +151,14 @@
                             <nil key="highlightedColor"/>
                         </label>
                         <stackView opaque="NO" contentMode="scaleToFill" distribution="equalCentering" translatesAutoresizingMaskIntoConstraints="NO" id="QYR-SU-wvn">
-                            <rect key="frame" x="0.0" y="548" width="366" height="231"/>
+                            <rect key="frame" x="0.0" y="548" width="366" height="207"/>
                             <subviews>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="hyC-bc-bcl">
-                                    <rect key="frame" x="0.0" y="0.0" width="50" height="231"/>
+                                    <rect key="frame" x="0.0" y="0.0" width="50" height="207"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lwk-oe-Rbj">
-                                    <rect key="frame" x="55.5" y="0.0" width="44" height="231"/>
+                                    <rect key="frame" x="55.5" y="0.0" width="44" height="207"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="44" id="ubM-L3-LEy"/>
                                     </constraints>
@@ -170,11 +169,11 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="1VS-7g-3lJ">
-                                    <rect key="frame" x="105.5" y="0.0" width="50" height="231"/>
+                                    <rect key="frame" x="105.5" y="0.0" width="50" height="207"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="t0k-eb-9LH">
-                                    <rect key="frame" x="156" y="0.0" width="54" height="231"/>
+                                    <rect key="frame" x="156" y="0.0" width="54" height="207"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="54" id="2SK-59-N2U"/>
                                     </constraints>
@@ -182,11 +181,11 @@
                                     <state key="normal" title="Button" image="play"/>
                                 </button>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="KBc-aj-1o0">
-                                    <rect key="frame" x="210.5" y="0.0" width="50" height="231"/>
+                                    <rect key="frame" x="210.5" y="0.0" width="50" height="207"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                                 <button opaque="NO" contentMode="scaleToFill" ambiguous="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jGJ-6f-Gpb">
-                                    <rect key="frame" x="266.5" y="0.0" width="44" height="231"/>
+                                    <rect key="frame" x="266.5" y="0.0" width="44" height="207"/>
                                     <constraints>
                                         <constraint firstAttribute="width" constant="44" id="OBx-Wu-S0l"/>
                                     </constraints>
@@ -197,13 +196,13 @@
                                     </connections>
                                 </button>
                                 <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="sFf-MV-akT">
-                                    <rect key="frame" x="316" y="0.0" width="50" height="231"/>
+                                    <rect key="frame" x="316" y="0.0" width="50" height="207"/>
                                     <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 </view>
                             </subviews>
                         </stackView>
                         <stackView opaque="NO" contentMode="scaleToFill" spacing="8" translatesAutoresizingMaskIntoConstraints="NO" id="FN3-o9-XgD">
-                            <rect key="frame" x="0.0" y="784" width="366" height="34"/>
+                            <rect key="frame" x="0.0" y="760" width="366" height="34"/>
                             <subviews>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="muted_volume" translatesAutoresizingMaskIntoConstraints="NO" id="9CC-G7-wTZ">
                                     <rect key="frame" x="0.0" y="0.0" width="34" height="34"/>
@@ -214,7 +213,7 @@
                                 <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="0.5" minValue="0.0" maxValue="1" translatesAutoresizingMaskIntoConstraints="NO" id="X8y-jg-fiI">
                                     <rect key="frame" x="40" y="0.0" width="286" height="35"/>
                                     <connections>
-                                        <action selector="handleVolumeChange:" destination="4Sc-wA-zIO" eventType="valueChanged" id="Tuy-2I-pe4"/>
+                                        <action selector="handleVolumeChange:" destination="4Sc-wA-zIO" eventType="valueChanged" id="oOh-cl-76Z"/>
                                     </connections>
                                 </slider>
                                 <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="max_volume" translatesAutoresizingMaskIntoConstraints="NO" id="tmk-P5-1BG">
@@ -237,7 +236,7 @@
                 <constraint firstItem="9i2-qZ-wJa" firstAttribute="top" secondItem="OJj-vo-ks5" secondAttribute="top" id="0tf-pP-ccl"/>
                 <constraint firstItem="zId-Rt-tUp" firstAttribute="top" secondItem="OJj-vo-ks5" secondAttribute="top" id="45L-se-V2t"/>
                 <constraint firstItem="9i2-qZ-wJa" firstAttribute="leading" secondItem="OJj-vo-ks5" secondAttribute="leading" constant="24" id="Rut-dp-s13"/>
-                <constraint firstItem="OJj-vo-ks5" firstAttribute="bottom" secondItem="9i2-qZ-wJa" secondAttribute="bottom" id="V2O-ci-Eyd"/>
+                <constraint firstItem="OJj-vo-ks5" firstAttribute="bottom" secondItem="9i2-qZ-wJa" secondAttribute="bottom" constant="24" id="V2O-ci-Eyd"/>
                 <constraint firstItem="OJj-vo-ks5" firstAttribute="trailing" secondItem="9i2-qZ-wJa" secondAttribute="trailing" constant="24" id="ZnO-4Y-MD7"/>
                 <constraint firstItem="zId-Rt-tUp" firstAttribute="leading" secondItem="OJj-vo-ks5" secondAttribute="leading" id="hRJ-db-hkD"/>
                 <constraint firstItem="OJj-vo-ks5" firstAttribute="trailing" secondItem="zId-Rt-tUp" secondAttribute="trailing" id="tXn-0U-LVZ"/>
