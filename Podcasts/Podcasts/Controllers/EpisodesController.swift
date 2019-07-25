@@ -71,11 +71,20 @@ class EpisodesController: UITableViewController {
         tableView.register(nib, forCellReuseIdentifier: cellId)
     }
     
+    // MARK:- UITableView
+    
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
         let downloadAction = UITableViewRowAction(style: .normal, title: "Download") { (_, _) in
             let episode = self.episodes[indexPath.row]
-            Episode.downloadEpisode(episode: episode)
+            let episodes = Episode.fetchDownloadedEpisodes()
+            let isDownloaded = episodes.firstIndex(where: {$0.title == episode.title && $0.author == episode.author}) != nil
+            if isDownloaded {
+                return
+            } else {
+                Episode.downloadEpisode(episode: episode)
+            }
             UIApplication.mainTabBarController().viewControllers?[2].tabBarItem.badgeValue = "New"
+            APIService.shared.downloadEpisode(episode: episode)
         }
         return [downloadAction]
     }
