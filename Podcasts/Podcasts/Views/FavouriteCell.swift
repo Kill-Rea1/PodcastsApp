@@ -10,7 +10,14 @@ import UIKit
 
 class FavouriteCell: UICollectionViewCell {
     
-    public var podcast: Podcast!
+    public var podcast: Podcast! {
+        didSet {
+            authorLabel.text = podcast.artistName ?? ""
+            podcatNameLabel.text = podcast.trackName ?? ""
+            guard let url = URL(string: podcast.artworkUrl600 ?? "") else { return }
+            podcastImageView.sd_setImage(with: url)
+        }
+    }
     
     fileprivate lazy var podcastImageView: UIImageView = {
         let iv = UIImageView(image: #imageLiteral(resourceName: "appicon"))

@@ -39,7 +39,7 @@ class SearchController: UITableViewController {
     fileprivate func footerView() -> UIView {
         let footerView = UIView()
         let activitiIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
-        activitiIndicatorView.color = .darkGray
+        activitiIndicatorView.color = #colorLiteral(red: 0.5523580313, green: 0.2407458723, blue: 0.6643408537, alpha: 1)
         activitiIndicatorView.startAnimating()
         
         let label = UILabel()

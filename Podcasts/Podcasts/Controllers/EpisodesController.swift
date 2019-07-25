@@ -12,7 +12,6 @@ import FeedKit
 class EpisodesController: UITableViewController {
     
     fileprivate let cellId = "episodesCell"
-    fileprivate let favoritedPodcatKey = "favoritedPodcatKey"
     fileprivate var episodes = [Episode]()
     public var podcast: Podcast? {
         didSet {
@@ -35,23 +34,17 @@ class EpisodesController: UITableViewController {
     }
     
     @objc fileprivate func handleFetchSavedPodcasts() {
-        guard let data = UserDefaults.standard.data(forKey: favoritedPodcatKey) else { return }
-        do {
-            let podcast = try NSKeyedUnarchiver.unarchivedObject(ofClass: Podcast.self, from: data)
-            print(podcast?.trackName ?? "")
-        } catch let unarchiveError {
-            print("Failed to unarchive data:", unarchiveError)
+        let fetchedPodcasts = Podcast.fetchSavedPodcasts()
+        fetchedPodcasts.forEach { (p) in
+            print(p.trackName ?? "")
         }
     }
     
     @objc fileprivate func handleSaveFavourite() {
         guard let podcast = podcast else { return }
-        do {
-            let data = try NSKeyedArchiver.archivedData(withRootObject: podcast, requiringSecureCoding: false)
-            UserDefaults.standard.set(data, forKey: favoritedPodcatKey)
-        } catch let archiveError {
-            print("Failed to archive data:", archiveError)
-        }
+        var listPodcasts = Podcast.fetchSavedPodcasts()
+        listPodcasts.append(podcast)
+        Podcast.savePodcasts(podcasts: listPodcasts)
     }
 
     fileprivate func fetchEpisodes() {
@@ -77,7 +70,7 @@ class EpisodesController: UITableViewController {
     
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let activitiIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
-        activitiIndicatorView.color = .darkGray
+        activitiIndicatorView.color = #colorLiteral(red: 0.5523580313, green: 0.2407458723, blue: 0.6643408537, alpha: 1)
         activitiIndicatorView.startAnimating()
         return activitiIndicatorView
     }
