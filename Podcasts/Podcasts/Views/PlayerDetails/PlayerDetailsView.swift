@@ -217,7 +217,7 @@ class PlayerDetailsView: UIView {
     }
     
     fileprivate func observerPlayerCurrentTime() {
-        let interval = CMTime(value: 1, timescale: 2)
+        let interval = CMTime(value: 1, timescale: 1)
         player.addPeriodicTimeObserver(forInterval: interval, queue: .main) { [weak self] (time) in
             self?.currentTimeLabel.text = time.toTimeString()
             let duration = self?.player.currentItem?.duration
@@ -279,7 +279,17 @@ class PlayerDetailsView: UIView {
     }
     
     fileprivate func playEpisode() {
-        guard let url = URL(string: episode.episodeUrl) else { return }
+        var url: URL
+        if episode.fileUrl != nil {
+            guard let _url = URL(string: episode.fileUrl ?? "") else { return }
+            let fileName = _url.lastPathComponent
+            guard var trueLocation = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
+            trueLocation.appendPathComponent(fileName)
+            url = trueLocation
+        } else {
+            guard let _url = URL(string: episode.episodeUrl) else { return }
+            url = _url
+        }
         let playerItem = AVPlayerItem(url: url)
         player.replaceCurrentItem(with: playerItem)
         player.play()

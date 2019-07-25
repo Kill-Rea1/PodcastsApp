@@ -19,7 +19,6 @@ class APIService {
         Alamofire.download(episode.episodeUrl, to: downloadRequest).downloadProgress { (progress) in
             print(progress.fractionCompleted)
         }.response { (response) in
-            print("Save file url into UserDefaults")
             var downloadedEpisodes = Episode.fetchDownloadedEpisodes()
             guard let index = downloadedEpisodes.firstIndex(where: {$0.title == episode.title && $0.author == episode.author}) else { return }
             downloadedEpisodes[index].fileUrl = response.destinationURL?.absoluteString ?? ""
