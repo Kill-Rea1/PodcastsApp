@@ -8,13 +8,24 @@
 
 import UIKit
 
+protocol EpisodeCellDelegate {
+    func handleDownload(title: String)
+}
+
 class EpisodeCell: UITableViewCell {
     
     @IBOutlet weak var episodeImageView: UIImageView!
     @IBOutlet weak var pubDateLabel: UILabel!
     @IBOutlet weak var titleLabel: UILabel!
     @IBOutlet weak var descriptionLabel: UILabel!
+    @IBOutlet weak var downloadProgressLabel: UILabel! 
+    @IBOutlet weak var downloadButton: UIButton! {
+        didSet {
+            downloadButton.addTarget(self, action: #selector(handleDownloadEpisode), for: .touchUpInside)
+        }
+    }
     
+    public var delegate: EpisodeCellDelegate?
     public var episode: Episode! {
         didSet {
             pubDateLabel.text = getDate(date: episode.pubDate)
@@ -25,6 +36,11 @@ class EpisodeCell: UITableViewCell {
             guard let url = URL(string: imageUrl) else { return }
             episodeImageView.sd_setImage(with: url)
         }
+    }
+    
+    @objc fileprivate func handleDownloadEpisode() {
+        delegate?.handleDownload(title: titleLabel.text ?? "")
+        downloadButton.isHidden = true
     }
     
     fileprivate func getDate(date: Date) -> String {

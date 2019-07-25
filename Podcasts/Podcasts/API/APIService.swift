@@ -12,13 +12,16 @@ import FeedKit
 
 class APIService {
     static let shared = APIService()
+    public typealias EpisodeDownloadCompleteTuple = (fileUrl: String, episodeTitle: String)
     fileprivate let baseiTunesUrl = "https://itunes.apple.com/search"
     
     public func downloadEpisode(episode: Episode) {
         let downloadRequest = DownloadRequest.suggestedDownloadDestination()
         Alamofire.download(episode.episodeUrl, to: downloadRequest).downloadProgress { (progress) in
-            print(progress.fractionCompleted)
+            NotificationCenter.default.post(name: .downloadProgress, object: nil, userInfo: ["title": episode.title, "progress": progress.fractionCompleted])
         }.response { (response) in
+            let episodeDownloadComplete = EpisodeDownloadCompleteTuple(response.destinationURL?.absoluteString ?? "", episode.title)
+            NotificationCenter.default.post(name: .downloadComplete, object: episodeDownloadComplete)
             var downloadedEpisodes = Episode.fetchDownloadedEpisodes()
             guard let index = downloadedEpisodes.firstIndex(where: {$0.title == episode.title && $0.author == episode.author}) else { return }
             downloadedEpisodes[index].fileUrl = response.destinationURL?.absoluteString ?? ""

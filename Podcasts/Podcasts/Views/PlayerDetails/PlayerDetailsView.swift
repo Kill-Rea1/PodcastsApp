@@ -285,6 +285,7 @@ class PlayerDetailsView: UIView {
             let fileName = _url.lastPathComponent
             guard var trueLocation = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return }
             trueLocation.appendPathComponent(fileName)
+            try? FileManager.default.removeItem(at: trueLocation)
             url = trueLocation
         } else {
             guard let _url = URL(string: episode.episodeUrl) else { return }

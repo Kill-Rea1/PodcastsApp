@@ -13,6 +13,7 @@ class EpisodesController: UITableViewController {
     
     fileprivate let heartButton = UIBarButtonItem(image: #imageLiteral(resourceName: "35 heart"), style: .plain, target: nil, action: nil)
     fileprivate let cellId = "episodesCell"
+    fileprivate let downloadedEpisodes = Episode.fetchDownloadedEpisodes()
     fileprivate var episodes = [Episode]()
     public var podcast: Podcast? {
         didSet {
@@ -71,6 +72,10 @@ class EpisodesController: UITableViewController {
         tableView.register(nib, forCellReuseIdentifier: cellId)
     }
     
+    fileprivate func checkIfEpisodeDownloaded(episode: Episode) -> Bool {
+        return downloadedEpisodes.firstIndex(where: {$0.title == episode.title && $0.author == episode.author}) != nil
+    }
+    
     // MARK:- UITableView
     
     override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
@@ -108,6 +113,8 @@ class EpisodesController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellId, for: indexPath) as! EpisodeCell
         let episode = episodes[indexPath.row]
         cell.episode = episode
+        cell.downloadButton.isHidden = checkIfEpisodeDownloaded(episode: episode)
+        cell.delegate = self
         return cell
     }
     
@@ -119,5 +126,21 @@ class EpisodesController: UITableViewController {
         let episode = episodes[indexPath.row]
         let mainTabController = UIApplication.mainTabBarController()
         mainTabController.maximizePlayerDetails(episode: episode, playlistEpisodes: episodes)
+    }
+}
+
+extension EpisodesController: EpisodeCellDelegate {
+    func handleDownload(title: String) {
+        guard let index = episodes.firstIndex(where: {$0.title == title}) else { return }
+        let episode = episodes[index]
+        let episodes = Episode.fetchDownloadedEpisodes()
+        let isDownloaded = episodes.firstIndex(where: {$0.title == episode.title && $0.author == episode.author}) != nil
+        if isDownloaded {
+            return
+        } else {
+            Episode.downloadEpisode(episode: episode)
+        }
+        UIApplication.mainTabBarController().viewControllers?[2].tabBarItem.badgeValue = "New"
+        APIService.shared.downloadEpisode(episode: episode)
     }
 }

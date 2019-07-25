@@ -48,6 +48,19 @@ extension UIApplication {
     }
 }
 
+extension Notification.Name {
+    static let downloadProgress = NSNotification.Name("downloadProgress")
+    static let downloadComplete = NSNotification.Name("downloadComplete")
+}
+
+extension FileManager {
+    static func getPathToFile(fileName: String) -> URL? {
+        guard var trueLocation = FileManager.default.urls(for: .documentDirectory, in: .userDomainMask).first else { return nil }
+        trueLocation.appendPathComponent(fileName)
+        return trueLocation
+    }
+}
+
 extension UIView {
     @discardableResult
     func addConsctraints(_ leading: NSLayoutXAxisAnchor?, _ trailing: NSLayoutXAxisAnchor?, _ top: NSLayoutYAxisAnchor?, _ bottom: NSLayoutYAxisAnchor?, _ padding: UIEdgeInsets = .zero, _ size: CGSize = .zero) -> AnchoredConstraints {
