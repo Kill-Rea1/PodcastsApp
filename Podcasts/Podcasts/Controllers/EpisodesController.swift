@@ -11,6 +11,7 @@ import FeedKit
 
 class EpisodesController: UITableViewController {
     
+    fileprivate let heartButton = UIBarButtonItem(image: #imageLiteral(resourceName: "35 heart"), style: .plain, target: nil, action: nil)
     fileprivate let cellId = "episodesCell"
     fileprivate var episodes = [Episode]()
     public var podcast: Podcast? {
@@ -27,16 +28,12 @@ class EpisodesController: UITableViewController {
     }
     
     fileprivate func navigationBarItems() {
-        navigationItem.rightBarButtonItems = [
-            UIBarButtonItem(title: "Favorite", style: .plain, target: self, action: #selector(handleSaveFavourite)),
-            UIBarButtonItem(title: "Fetch", style: .plain, target: self, action: #selector(handleFetchSavedPodcasts))
-        ]
-    }
-    
-    @objc fileprivate func handleFetchSavedPodcasts() {
-        let fetchedPodcasts = Podcast.fetchSavedPodcasts()
-        fetchedPodcasts.forEach { (p) in
-            print(p.trackName ?? "")
+        let savedPoscasts = Podcast.fetchSavedPodcasts()
+        let hasFavorited = savedPoscasts.firstIndex(where: {$0.trackName == podcast?.trackName && $0.artistName == podcast?.artistName}) != nil
+        if hasFavorited {
+            navigationItem.rightBarButtonItem = heartButton
+        } else {
+            navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Favorite", style: .plain, target: self, action: #selector(handleSaveFavourite))
         }
     }
     
@@ -45,6 +42,12 @@ class EpisodesController: UITableViewController {
         var listPodcasts = Podcast.fetchSavedPodcasts()
         listPodcasts.append(podcast)
         Podcast.savePodcasts(podcasts: listPodcasts)
+        navigationItem.rightBarButtonItem = heartButton
+        showBadgeHighlited()
+    }
+    
+    fileprivate func showBadgeHighlited() {
+        UIApplication.mainTabBarController().viewControllers?[0].tabBarItem.badgeValue = "New"
     }
 
     fileprivate func fetchEpisodes() {

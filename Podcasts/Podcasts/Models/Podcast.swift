@@ -14,12 +14,14 @@ class Podcast: NSObject, Decodable, NSCoding, NSSecureCoding {
         self.trackName = aDecoder.decodeObject(forKey: "trackNameKey") as? String
         self.artistName = aDecoder.decodeObject(forKey: "artistNameKey") as? String
         self.artworkUrl600 = aDecoder.decodeObject(forKey: "artworkUrlKey") as? String
+        self.feedUrl = aDecoder.decodeObject(forKey: "feedUrlKey") as? String
     }
     
     func encode(with aCoder: NSCoder) {
         aCoder.encode(trackName ?? "", forKey: "trackNameKey")
         aCoder.encode(artistName ?? "", forKey: "artistNameKey")
         aCoder.encode(artworkUrl600 ?? "", forKey: "artworkUrlKey")
+        aCoder.encode(feedUrl ?? "", forKey: "feedUrlKey")
     }
     
     var trackName: String?
