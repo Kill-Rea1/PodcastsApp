@@ -71,6 +71,15 @@ class EpisodesController: UITableViewController {
         tableView.register(nib, forCellReuseIdentifier: cellId)
     }
     
+    override func tableView(_ tableView: UITableView, editActionsForRowAt indexPath: IndexPath) -> [UITableViewRowAction]? {
+        let downloadAction = UITableViewRowAction(style: .normal, title: "Download") { (_, _) in
+            let episode = self.episodes[indexPath.row]
+            Episode.downloadEpisode(episode: episode)
+            UIApplication.mainTabBarController().viewControllers?[2].tabBarItem.badgeValue = "New"
+        }
+        return [downloadAction]
+    }
+    
     override func tableView(_ tableView: UITableView, viewForFooterInSection section: Int) -> UIView? {
         let activitiIndicatorView = UIActivityIndicatorView(style: .whiteLarge)
         activitiIndicatorView.color = #colorLiteral(red: 0.5523580313, green: 0.2407458723, blue: 0.6643408537, alpha: 1)

@@ -10,7 +10,7 @@ import UIKit
 
 class FavoritesController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
-    fileprivate let cellId = "cellId"
+    fileprivate let favoriteCellId = "favoriteCell"
     fileprivate let padding: CGFloat = 16
     fileprivate var podcasts = Podcast.fetchSavedPodcasts()
     
@@ -27,7 +27,7 @@ class FavoritesController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     fileprivate func setupCollectionView() {
-        collectionView.register(FavouriteCell.self, forCellWithReuseIdentifier: cellId)
+        collectionView.register(FavouriteCell.self, forCellWithReuseIdentifier: favoriteCellId)
         collectionView.backgroundColor = .white
         let gesture = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
         collectionView.addGestureRecognizer(gesture)
@@ -73,7 +73,7 @@ class FavoritesController: UICollectionViewController, UICollectionViewDelegateF
     }
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: cellId, for: indexPath) as! FavouriteCell
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: favoriteCellId, for: indexPath) as! FavouriteCell
         let podcast = podcasts[indexPath.item]
         cell.podcast = podcast
         return cell

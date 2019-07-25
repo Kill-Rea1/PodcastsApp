@@ -28,6 +28,7 @@
 		ED38B88B22E693F00088D216 /* PlayerDetailsView.xib in Resources */ = {isa = PBXBuildFile; fileRef = ED38B88A22E693F00088D216 /* PlayerDetailsView.xib */; };
 		ED38B88D22E696040088D216 /* PlayerDetailsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = ED38B88C22E696040088D216 /* PlayerDetailsView.swift */; };
 		EDB9471722E910D1000B3640 /* FavouriteCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB9471622E910D1000B3640 /* FavouriteCell.swift */; };
+		EDB9471922E933CF000B3640 /* DownloadsController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EDB9471822E933CF000B3640 /* DownloadsController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -56,6 +57,7 @@
 		ED38B88A22E693F00088D216 /* PlayerDetailsView.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = PlayerDetailsView.xib; sourceTree = "<group>"; };
 		ED38B88C22E696040088D216 /* PlayerDetailsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PlayerDetailsView.swift; sourceTree = "<group>"; };
 		EDB9471622E910D1000B3640 /* FavouriteCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FavouriteCell.swift; sourceTree = "<group>"; };
+		EDB9471822E933CF000B3640 /* DownloadsController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DownloadsController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 				ED38B86822E61DC90088D216 /* SearchController.swift */,
 				ED38B87622E66B940088D216 /* EpisodesController.swift */,
 				ED38B82F22E3A3DF0088D216 /* FavoritesController.swift */,
+				EDB9471822E933CF000B3640 /* DownloadsController.swift */,
 				ED38B84222E3A5730088D216 /* MainTabController.swift */,
 			);
 			path = Controllers;
@@ -320,6 +323,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				EDB9471922E933CF000B3640 /* DownloadsController.swift in Sources */,
 				ED38B83622E3A3DF0088D216 /* Podcasts.xcdatamodeld in Sources */,
 				ED38B88D22E696040088D216 /* PlayerDetailsView.swift in Sources */,
 				ED38B87122E646AE0088D216 /* APIService.swift in Sources */,
