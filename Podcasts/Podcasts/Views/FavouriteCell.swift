@@ -63,4 +63,8 @@ class FavouriteCell: UICollectionViewCell {
     required init?(coder aDecoder: NSCoder) {
         fatalError()
     }
+    
+    deinit {
+        print("Bye Bye")
+    }
 }

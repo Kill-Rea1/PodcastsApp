@@ -168,12 +168,14 @@ class PlayerDetailsView: UIView {
         commandCenter.previousTrackCommand.addTarget(self, action: #selector(handlePreviousTrack))
     }
     
-    @objc fileprivate func handleNextTrack() {
+    @objc fileprivate func handleNextTrack() -> MPRemoteCommandHandlerStatus {
         changeEpisodeTo(1)
+        return .success
     }
     
-    @objc fileprivate func handlePreviousTrack() {
+    @objc fileprivate func handlePreviousTrack() -> MPRemoteCommandHandlerStatus {
         changeEpisodeTo(-1)
+        return .success
     }
     
     fileprivate func changeEpisodeTo(_ newIndex: Int) {
