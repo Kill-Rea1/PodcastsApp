@@ -23,21 +23,27 @@ class MainTabController: UITabBarController {
     }
     
     fileprivate func performAnimations(maximized: Bool) {
+        let frame = tabBar.frame
+        let height = frame.size.height
+        var offsetY: CGFloat
+        
         playerDetailsView.isMaximized = maximized
         if maximized {
             minimizedTopConstraint.isActive = false
             maximizedTopConstraint.constant = 0
             bottomConstraint.constant = 0
             maximizedTopConstraint.isActive = true
+            offsetY = height
         } else {
             maximizedTopConstraint.isActive = false
             bottomConstraint.constant = view.frame.height - tabBar.frame.height - 64
             minimizedTopConstraint.isActive = true
+            offsetY = -height
         }
         
         UIView.animate(withDuration: 0.5, delay: 0, usingSpringWithDamping: 0.7, initialSpringVelocity: 1, options: .curveEaseOut, animations: {
             self.view.layoutIfNeeded()
-            self.tabBar.transform = maximized ? CGAffineTransform(translationX: 0, y: 100) : .identity
+            self.tabBar.frame = frame.offsetBy(dx: 0, dy: offsetY)
             self.playerDetailsView.maximizedPlayerView.alpha = maximized ? 1 : 0
             self.playerDetailsView.miniPlayerView.alpha = maximized ? 0 : 1
         })
