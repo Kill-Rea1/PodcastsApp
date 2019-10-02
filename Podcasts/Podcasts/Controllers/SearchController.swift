@@ -32,7 +32,7 @@ class SearchController: UITableViewController {
         definesPresentationContext = true
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
-//        searchController.dimsBackgroundDuringPresentation = false
+        searchController.dimsBackgroundDuringPresentation = false
         searchController.searchBar.delegate = self
     }
     
