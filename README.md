@@ -8,7 +8,7 @@ You can control player in command center or on locked screen.
  - FeedKit for RSS data
  - AVKit 
  - MediaPlayer
- - UI written by XIB and AutoLayout
+ - UI is written using XIB and AutoLayout
  
 ### Screenshots 
 <img src="Podcasts/Screenshots/favorites.png" width=400 alt='Favourites screen'> <img src="Podcasts/Screenshots/downloads.png" width=400 alt='Downloads screen'>
